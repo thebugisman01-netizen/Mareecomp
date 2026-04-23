@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Katalog Penjualan & Jasa | MAREECOMP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #041224;
+        --ink: #dbe9ff;
+        --panel: #0a1f3f;
+        --line: #1f3f6f;
+        --primary: #2a9bff;
+        --primary-soft: #153465;
+        --accent: #62dbff;
+        --muted: #8eb1de;
+        --shadow: 0 18px 34px rgba(3, 14, 29, 0.45);
+        --radius-lg: 26px;
+        --radius-md: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        font-family: "IBM Plex Sans", sans-serif;
+        background:
+          radial-gradient(circle at 12% 15%, #0f3266 0 18%, transparent 46%),
+          radial-gradient(circle at 85% 0%, #1462b8 0 20%, transparent 44%),
+          var(--bg);
+      }
+
+      .grain {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.2;
+        background-image: radial-gradient(#73b3ff 0.6px, transparent 0.6px);
+        background-size: 3px 3px;
+      }
+
+      .container {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 1.1rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+        gap: 1rem;
+        animation: fadeSlideUp 0.6s ease both;
+      }
+
+      .brand-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+      }
+
+      .brand-logo {
+        width: 56px;
+        height: 56px;
+        border-radius: 15px;
+        object-fit: cover;
+        border: 1px solid #2d69b8;
+        box-shadow: 0 8px 24px rgba(34, 120, 206, 0.32);
+        animation: glowPulse 3s ease-in-out infinite;
+        transition: transform 0.3s ease;
+      }
+
+      .brand-logo:hover {
+        transform: scale(1.08) rotate(-2deg);
+      }
+
+      .brand {
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        font-size: clamp(1.1rem, 3vw, 1.5rem);
+        animation: textGlow 4s ease-in-out infinite;
+      }
+
+      .subtitle {
+        display: block;
+        font-size: 0.78rem;
+        color: var(--muted);
+        font-weight: 500;
+        margin-top: 0.25rem;
+      }
+
+      .cta,
+      .quick-link {
+        text-decoration: none;
+        color: #041024;
+        background: linear-gradient(135deg, #2a9bff, #62dbff);
+        border: 1px solid #49a7ff;
+        padding: 0.7rem 1rem;
+        border-radius: 999px;
+        font-weight: 600;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.3s ease;
+        background-size: 200% 100%;
+        background-position: left;
+      }
+
+      .cta:hover,
+      .quick-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(40, 151, 255, 0.38), 0 0 12px rgba(98, 219, 255, 0.2);
+        background-position: right;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #081b39 0%, #10366a 58%, #1f6fc0 100%);
+        color: #f3f8ff;
+        border-radius: var(--radius-lg);
+        padding: clamp(1.6rem, 4vw, 2.6rem);
+        display: grid;
+        grid-template-columns: 1.35fr 1fr;
+        gap: 1.2rem;
+        margin-bottom: 1.2rem;
+        overflow: hidden;
+        animation: fadeSlideUp 0.7s ease 0.15s both;
+        position: relative;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: var(--radius-lg);
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(42, 155, 255, 0.03) 2px,
+          rgba(42, 155, 255, 0.03) 4px
+        );
+        background-size: 100% 4px;
+        animation: scanline 8s linear infinite;
+        pointer-events: none;
+      }
+
+      .hero h1 {
+        font-family: "Bricolage Grotesque", sans-serif;
+        margin: 0;
+        line-height: 1.08;
+        font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+        animation: fadeSlideRight 0.8s ease 0.3s both;
+      }
+
+      .hero p {
+        margin: 0.9rem 0 0;
+        color: #c8e3ff;
+        max-width: 48ch;
+        animation: fadeSlideRight 0.8s ease 0.45s both;
+      }
+
+      .hero-meta {
+        align-self: end;
+        justify-self: end;
+        width: 100%;
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .meta-box {
+        background: rgba(55, 124, 204, 0.18);
+        border: 1px solid rgba(145, 203, 255, 0.34);
+        border-radius: var(--radius-md);
+        padding: 0.8rem 1rem;
+        animation: fadeSlideUp 0.6s ease 0.5s both;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .meta-box:nth-child(2) {
+        animation-delay: 0.65s;
+      }
+
+      .meta-box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(42, 155, 255, 0.2);
+      }
+
+      .meta-label {
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        opacity: 0.88;
+      }
+
+      .meta-value {
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-size: 1.38rem;
+        margin-top: 0.2rem;
+        font-weight: 700;
+      }
+
+      .section-head {
+        margin: 1.5rem 0 0.9rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.8rem;
+        animation: fadeSlideUp 0.6s ease 0.3s both;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-size: clamp(1.3rem, 3vw, 1.9rem);
+      }
+
+      .section-head p {
+        margin: 0.4rem 0 0;
+        color: var(--muted);
+      }
+
+      .filters {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        background: #092144;
+        color: var(--ink);
+        padding: 0.54rem 0.9rem;
+        border-radius: 999px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.25s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .chip::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 999px;
+        background: radial-gradient(circle at center, rgba(42, 155, 255, 0.25), transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .chip:hover {
+        border-color: var(--primary);
+        transform: translateY(-1px);
+      }
+
+      .chip:hover::after {
+        opacity: 1;
+      }
+
+      .chip.active {
+        color: #061228;
+        background: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .chip.active::after {
+        opacity: 0;
+      }
+
+      .catalog {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 0.95rem;
+        padding-bottom: 2.8rem;
+      }
+
+      .card,
+      .skeleton,
+      .empty-state {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 270px;
+        padding: 1rem;
+        box-shadow: var(--shadow);
+        transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+        animation: rise 0.5s ease both;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(3, 14, 29, 0.55), 0 0 20px rgba(42, 155, 255, 0.12);
+        border-color: rgba(42, 155, 255, 0.4);
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeSlideUp {
+        from {
+          opacity: 0;
+          transform: translateY(28px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeSlideRight {
+        from {
+          opacity: 0;
+          transform: translateX(-28px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes glowPulse {
+        0%, 100% {
+          box-shadow: 0 0 12px rgba(42, 155, 255, 0.15);
+        }
+        50% {
+          box-shadow: 0 0 28px rgba(42, 155, 255, 0.4), 0 0 56px rgba(98, 219, 255, 0.15);
+        }
+      }
+
+      @keyframes floatBounce {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+      }
+
+      @keyframes textGlow {
+        0%, 100% {
+          text-shadow: 0 0 8px rgba(42, 155, 255, 0.2);
+        }
+        50% {
+          text-shadow: 0 0 20px rgba(42, 155, 255, 0.5), 0 0 40px rgba(98, 219, 255, 0.2);
+        }
+      }
+
+      @keyframes scanline {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 0 100%;
+        }
+      }
+
+      .badge {
+        width: fit-content;
+        border-radius: 999px;
+        padding: 0.28rem 0.72rem;
+        font-size: 0.73rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        transition: transform 0.2s ease;
+      }
+
+      .badge:hover {
+        transform: scale(1.05);
+      }
+
+      .badge.penjualan {
+        background: #133a74;
+        color: #89c8ff;
+      }
+
+      .badge.jasa {
+        background: var(--primary-soft);
+        color: #8dc2ff;
+      }
+
+      .title {
+        margin: 0.82rem 0 0.3rem;
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-size: 1.1rem;
+      }
+
+      .spec {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .price {
+        margin: 1rem 0 0.55rem;
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-size: 1.35rem;
+        background: linear-gradient(90deg, #2a9bff, #62dbff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .desc {
+        margin: 0;
+        color: #bad8ff;
+        font-size: 0.92rem;
+      }
+
+      .card-action {
+        margin-top: 1rem;
+      }
+
+      .quick-link {
+        font-size: 0.9rem;
+        display: inline-block;
+      }
+
+      .skeleton {
+        min-height: 270px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .skeleton::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        transform: translateX(-100%);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+        animation: shine 1.2s infinite;
+      }
+
+      @keyframes shine {
+        to {
+          transform: translateX(100%);
+        }
+      }
+
+      .empty-state {
+        grid-column: 1 / -1;
+        padding: 1.4rem;
+      }
+
+      .empty-state h3 {
+        margin: 0;
+        font-family: "Bricolage Grotesque", sans-serif;
+      }
+
+      .empty-state p {
+        margin: 0.5rem 0 0;
+        color: var(--muted);
+      }
+
+      .floating-wa {
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+        z-index: 4;
+        animation: floatBounce 2.5s ease-in-out infinite, glowPulse 3s ease-in-out infinite;
+      }
+
+      footer {
+        color: #8fb0dd;
+        font-size: 0.85rem;
+        text-align: center;
+        padding: 1.5rem 1rem 2.5rem;
+        animation: fadeSlideUp 0.6s ease 0.8s both;
+      }
+
+      @media (max-width: 860px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-meta {
+          justify-self: stretch;
+        }
+
+        .topbar {
+          align-items: flex-start;
+          gap: 0.8rem;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grain"></div>
+
+    <div class="container">
+      <header class="topbar">
+        <div class="brand-wrap">
+         
+          <div>
+            <div class="brand">MAREECOMP</div>
+            <small class="subtitle">Laptop second area Depok</small>
+          </div>
+        </div>
+        <a class="cta" href="https://wa.me/6289654136885">Konsultasi WhatsApp</a>
+      </header>
+
+      <section class="hero">
+        <div>
+          <h1>Katalog Penjualan dan Jasa dalam satu halaman.</h1>
+          <p>
+            Best seller yang tersedia saat ini adalah Lenovo X280 dan X390. Laptop baru juga ready — silakan tanyakan ketersediaan unit via WhatsApp.
+          </p>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-box">
+            <div class="meta-label">Update katalog</div>
+            <div class="meta-value">16 April 2026</div>
+          </div>
+          <div class="meta-box">
+            <div class="meta-label">Harga laptop</div>
+            <div class="meta-value">Mulai Rp2.500.000</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <h2>Katalog MAREECOMP</h2>
+            <p>Fokus pada unit best seller, stok berubah mengikuti ketersediaan harian.</p>
+          </div>
+          <div class="filters" role="tablist" aria-label="Filter katalog">
+            <button class="chip active" data-filter="semua" role="tab" aria-selected="true">Semua</button>
+            <button class="chip" data-filter="penjualan" role="tab" aria-selected="false">Penjualan</button>
+            <button class="chip" data-filter="jasa" role="tab" aria-selected="false">Jasa</button>
+          </div>
+        </div>
+
+        <div id="catalog" class="catalog" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <a class="quick-link floating-wa" href="https://wa.me/6289654136885">Chat Admin</a>
+
+    <footer>MAREECOMP - Solusi laptop harian untuk kerja, sekolah, dan usaha.</footer>
+
+    <script>
+      const items = [
+        {
+          type: "penjualan",
+          title: "Lenovo ThinkPad X280",
+          spec: "Core i5 Gen 8, RAM 8GB, SSD 256GB",
+          price: "Mulai Rp3.300.000",
+          desc: "Desain tipis dan ringan untuk kerja kantor dan kuliah.",
+          waText: "Halo, saya ingin cek stok Lenovo ThinkPad X280."
+        },
+        {
+          type: "penjualan",
+          title: "Lenovo ThinkPad X390",
+          spec: "Core i5 Gen 8, RAM 8GB, SSD 256GB",
+          price: "Mulai Rp4.200.000",
+          desc: "Layar 13 inci yang compact, cocok untuk kerja mobile.",
+          waText: "Halo, saya ingin cek stok Lenovo ThinkPad X390."
+        },
+        {
+          type: "jasa",
+          title: "Install Ulang + Setup",
+          spec: "Windows, driver, Office, browser, antivirus",
+          price: "Rp150.000",
+          desc: "Pembersihan software lama dan pemasangan ulang sampai siap digunakan.",
+          waText: "Halo, saya ingin booking jasa install ulang laptop."
+        },
+        {
+          type: "jasa",
+          title: "Cleaning + Ganti Thermal Paste",
+          spec: "Pembersihan fan, heatsink, dan jalur pendingin",
+          price: "Rp250.000",
+          desc: "Menurunkan suhu laptop agar tidak cepat panas saat dipakai lama.",
+          waText: "Halo, saya mau booking cleaning + thermal paste."
+        },
+        {
+          type: "jasa",
+          title: "Upgrade SSD / RAM",
+          spec: "Konsultasi komponen, pemasangan, tes stabilitas",
+          price: "Mulai Rp200.000",
+          desc: "Meningkatkan performa booting dan aplikasi sesuai kebutuhan pengguna.",
+          waText: "Halo, saya ingin konsultasi upgrade SSD/RAM."
+        }
+      ];
+
+      const catalog = document.getElementById("catalog");
+      const chips = document.querySelectorAll(".chip");
+
+      let activeFilter = "semua";
+      let isLoading = true;
+
+      function waLink(text) {
+        return `https://wa.me/6289654136885?text=${encodeURIComponent(text)}`;
+      }
+
+      function renderSkeleton() {
+        catalog.innerHTML = "";
+        for (let i = 0; i < 6; i += 1) {
+          const block = document.createElement("div");
+          block.className = "skeleton";
+          catalog.appendChild(block);
+        }
+      }
+
+      function renderItems() {
+        catalog.innerHTML = "";
+
+        const filtered = activeFilter === "semua" ? items : items.filter((item) => item.type === activeFilter);
+
+        if (!filtered.length) {
+          const empty = document.createElement("article");
+          empty.className = "empty-state";
+          empty.innerHTML = `
+            <h3>Item belum tersedia</h3>
+            <p>Gunakan filter lain atau hubungi admin untuk permintaan spesifik.</p>
+          `;
+          catalog.appendChild(empty);
+          return;
+        }
+
+        filtered.forEach((item, idx) => {
+          const card = document.createElement("article");
+          card.className = "card";
+          card.style.animationDelay = `${idx * 60}ms`;
+          card.innerHTML = `
+            <div>
+              <span class="badge ${item.type}">${item.type.toUpperCase()}</span>
+              <h3 class="title">${item.title}</h3>
+              <p class="spec">${item.spec}</p>
+              <p class="price">${item.price}</p>
+              <p class="desc">${item.desc}</p>
+            </div>
+            <div class="card-action">
+              <a class="quick-link" href="${waLink(item.waText)}">Pesan Sekarang</a>
+            </div>
+          `;
+          catalog.appendChild(card);
+        });
+      }
+
+      chips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          activeFilter = chip.dataset.filter;
+          chips.forEach((btn) => {
+            const active = btn === chip;
+            btn.classList.toggle("active", active);
+            btn.setAttribute("aria-selected", active ? "true" : "false");
+          });
+          renderItems();
+        });
+      });
+
+      renderSkeleton();
+      setTimeout(() => {
+        isLoading = false;
+        if (!isLoading) renderItems();
+      }, 520);
+    </script>
+  </body>
+</html>
