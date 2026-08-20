@@ -62,19 +62,18 @@
     .chip:hover { color: var(--ink); background: var(--bg); }
     .chip.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(32, 95, 154, 0.3); }
     
-    /* Catalog Grid & Auto Slider */
+    /* Catalog Grid & Auto Slider FIX */
     .catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; padding-bottom: 2rem; }
     .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s ease; box-shadow: var(--shadow-sm); }
     .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); border-color: #bfdbfe; }
     
-    /* Auto Slider Styles */
     .card-img-wrap { width: 100%; aspect-ratio: 9/16; max-height: 280px; background: #e2e8f0; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .slider-track { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
-    .slider-track img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; }
-    .no-image-text { color: var(--ink-light); font-size: 0.9rem; font-weight: 600; }
+    /* FIX: Force image to exact width of track container and prevent shrinking */
+    .slider-track img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; display: block; }
     
-    /* Image Count Indicator */
-    .img-indicator { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: bold; backdrop-filter: blur(4px); }
+    .no-image-text { color: var(--ink-light); font-size: 0.9rem; font-weight: 600; }
+    .img-indicator { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: bold; backdrop-filter: blur(4px); z-index: 2; }
 
     .card-content { padding: 1.5rem; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
     .badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 8px; padding: 0.3rem 0.8rem; font-size: 0.75rem; font-weight: 700; margin-bottom: 12px; letter-spacing: 0.5px; width: fit-content;}
@@ -106,6 +105,8 @@
     .vertical-card:hover { transform: translateY(-10px) rotate(1deg); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
     .vc-1 { background: linear-gradient(145deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%); color: #6b21a8; }
     .vc-2 { background: linear-gradient(145deg, #a18cd1 0%, #fbc2eb 100%); color: #1e1b4b; }
+    .vc-3 { background: linear-gradient(145deg, #84fab0 0%, #8fd3f4 100%); color: #064e3b; }
+    .vc-4 { background: linear-gradient(145deg, #fccb90 0%, #d57eeb 100%); color: #4c1d95; }
     .vc-realtime { background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%); color: white; border: 1px solid #334155;}
     
     .emoji-float { font-size: 3.5rem; position: absolute; top: 20px; right: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1)); }
@@ -128,7 +129,10 @@
     
     /* Upload Thumbnails */
     .thumbnail-container { display: flex; gap: 10px; overflow-x: auto; margin-top: 10px; padding-bottom: 5px; }
-    .thumbnail-container img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid var(--line); }
+    .thumbnail-wrapper { position: relative; flex-shrink: 0; }
+    .thumbnail-wrapper img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid var(--line); }
+    .delete-thumb-btn { position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: 0.2s;}
+    .delete-thumb-btn:hover { transform: scale(1.1); background: #dc2626; }
 
     @media (max-width: 768px) {
       .hero { flex-direction: column-reverse; text-align: center; padding: 2rem 1.5rem; }
@@ -227,14 +231,16 @@
         </div>
       </div>
       <div class="scroll-container" id="newsContainer">
-        <!-- Static Tips Fallback (Akan digeser/ditimpa oleh API Berita) -->
+        <!-- 4 Kartu Statis Selalu Tampil -->
         <div class="vertical-card vc-1"><div class="emoji-float">🥶</div><div><span class="tip-badge">Perawatan</span><h3 class="tip-title">Ganti Pasta</h3><p class="tip-desc">Laptop cepat panas? Waktunya ganti thermal paste.</p></div></div>
         <div class="vertical-card vc-2"><div class="emoji-float">🔋</div><div><span class="tip-badge">Baterai</span><h3 class="tip-title">Biar Awet!</h3><p class="tip-desc">Gunakan fitur "Battery Conservation" agar tertahan 80%.</p></div></div>
+        <div class="vertical-card vc-3"><div class="emoji-float">🚀</div><div><span class="tip-badge">Upgrade</span><h3 class="tip-title">Wajib SSD</h3><p class="tip-desc">Pindah ke SSD bikin laptop tua jadi super ngebut.</p></div></div>
+        <div class="vertical-card vc-4"><div class="emoji-float">🤖</div><div><span class="tip-badge">Tech News</span><h3 class="tip-title">Era AI Dimulai</h3><p class="tip-desc">Windows Copilot dan AI kini mulai masuk sistem operasi.</p></div></div>
       </div>
     </section>
   </div>
 
-  <!-- FOOTER (Updated dengan Alamat Spesifik) -->
+  <!-- FOOTER -->
   <footer>
     <div class="footer-content">
       <div class="footer-col">
@@ -279,11 +285,12 @@
           </select>
         </div>
         
-        <!-- NEW: MULTIPLE IMAGE UPLOAD -->
         <div class="form-group">
           <label>Unggah Foto (Bisa pilih lebih dari 1)</label>
           <input type="file" id="itemImage" accept="image/*" multiple style="padding: 0.5rem; background: white;">
-          <small style="color: var(--ink-light); display:block; margin-top:5px;">Foto akan otomatis dikompres agar memori browser tidak penuh. Foto akan dibuat *slideshow/carousel*.</small>
+          <small style="color: var(--ink-light); display:block; margin-top:5px;">Foto akan otomatis dikompres agar memori browser tidak penuh. Klik tombol ✕ merah untuk menghapus foto yang salah pilih.</small>
+          
+          <!-- THUMBNAIL PREVIEW AREA -->
           <div id="imagePreviewContainer" class="thumbnail-container"></div>
         </div>
 
@@ -315,8 +322,6 @@
     ];
 
     let items = JSON.parse(localStorage.getItem("mareecomp_data")) || defaultItems;
-    
-    // Migrasi data lama (image string -> images array) agar tak error
     items = items.map(item => {
       if(item.image && !item.images) item.images = [item.image];
       if(!item.images) item.images = [];
@@ -338,14 +343,41 @@
       this.value = numericValue ? "Rp " + parseInt(numericValue, 10).toLocaleString('id-ID') : "";
     });
 
-    // Fitur Kompresi Gambar (Agar LocalStorage tidak cepat limit)
+    // RENDER THUMBNAILS & FITUR HAPUS FOTO
+    function renderThumbnails() {
+      const previewContainer = document.getElementById("imagePreviewContainer");
+      previewContainer.innerHTML = "";
+      
+      currentUploadedImages.forEach((imgBase64, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'thumbnail-wrapper';
+        
+        const imgEl = document.createElement('img');
+        imgEl.src = imgBase64;
+        
+        const delBtn = document.createElement('button');
+        delBtn.className = 'delete-thumb-btn';
+        delBtn.innerHTML = '✕';
+        delBtn.type = 'button'; // Penting: mencegah form otomatis ke-submit saat diklik
+        delBtn.onclick = function() {
+          currentUploadedImages.splice(index, 1); // Hapus gambar spesifik dari array
+          renderThumbnails(); // Render ulang thumbnail
+        };
+        
+        wrapper.appendChild(imgEl);
+        wrapper.appendChild(delBtn);
+        previewContainer.appendChild(wrapper);
+      });
+    }
+
+    // Kompresi Gambar
     function compressImage(file, callback) {
       const reader = new FileReader();
       reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 500; // Dikompres cukup untuk tampilan HP
+          const MAX_WIDTH = 500;
           const MAX_HEIGHT = 700;
           let width = img.width;
           let height = img.height;
@@ -358,7 +390,7 @@
           canvas.width = width; canvas.height = height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
-          callback(canvas.toDataURL('image/jpeg', 0.6)); // Kualitas 60%
+          callback(canvas.toDataURL('image/jpeg', 0.6));
         };
         img.src = e.target.result;
       };
@@ -368,16 +400,13 @@
     // Multi Image Upload Event
     document.getElementById("itemImage").addEventListener("change", function(e) {
       const files = e.target.files;
-      const previewContainer = document.getElementById("imagePreviewContainer");
-      
       for(let i=0; i<files.length; i++) {
         compressImage(files[i], function(compressedBase64) {
           currentUploadedImages.push(compressedBase64);
-          const imgEl = document.createElement('img');
-          imgEl.src = compressedBase64;
-          previewContainer.appendChild(imgEl);
+          renderThumbnails();
         });
       }
+      this.value = ""; 
     });
 
     window.toggleDesc = function(btn) {
@@ -414,16 +443,15 @@
           <button onclick="deleteItem(${item.id})" class="btn btn-danger">🗑️</button>
         ` : '';
 
-        // Logic Auto Slide (Carousel)
+        // FIX: Logic Auto Slide (Carousel) menggunakan width: 100% dan flex-shrink: 0
         let imageHTML = `<span class="no-image-text">Tidak ada foto</span>`;
         if (item.images && item.images.length > 0) {
           if (item.images.length === 1) {
-            imageHTML = `<img src="${item.images[0]}" alt="${item.title}" loading="lazy" style="width:100%; height:100%; object-fit:cover;">`;
+            imageHTML = `<img src="${item.images[0]}" alt="${item.title}" loading="lazy">`;
           } else {
-            // Build Carousel Track
-            let imagesTags = item.images.map(img => `<img src="${img}" style="width:${100/item.images.length}%; height:100%; object-fit:cover;">`).join('');
+            let imagesTags = item.images.map(img => `<img src="${img}" alt="${item.title}" loading="lazy">`).join('');
             imageHTML = `
-              <div class="slider-track" data-count="${item.images.length}" data-current="0" style="width:${item.images.length * 100}%;">
+              <div class="slider-track" data-count="${item.images.length}" data-current="0">
                 ${imagesTags}
               </div>
               <span class="img-indicator">1 / ${item.images.length}</span>
@@ -459,7 +487,7 @@
       });
     }
 
-    // Auto-Slide Logic Javascript (Geser Otomatis tiap 3 Detik)
+    // FIX: Auto-Slide Javascript Logic
     setInterval(() => {
       document.querySelectorAll('.slider-track').forEach(track => {
         let count = parseInt(track.dataset.count);
@@ -467,8 +495,10 @@
           let current = parseInt(track.dataset.current);
           current = (current + 1) % count;
           track.dataset.current = current;
-          track.style.transform = `translateX(-${current * (100 / count)}%)`;
-          // Update indicator
+          
+          // Karena lebar track dan img adalah 100% parent, kita translate sejauh 100% dikali index
+          track.style.transform = `translateX(-${current * 100}%)`;
+          
           const indicator = track.nextElementSibling;
           if(indicator && indicator.classList.contains('img-indicator')) {
              indicator.innerText = `${current + 1} / ${count}`;
@@ -481,30 +511,29 @@
     async function fetchRealtimeNews() {
       const container = document.getElementById("newsContainer");
       try {
-        // Menggunakan RSS2JSON untuk mengambil berita tekno dari portal CNBC Indonesia / Suara
         const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.suara.com%2Frss%2Ftekno');
-        const data = await res.json();
+        if (!res.ok) throw new Error("Gagal mengambil data");
         
+        const data = await res.json();
         if(data.items && data.items.length > 0) {
           let newsHTML = "";
-          // Ambil 4 berita terbaru
           data.items.slice(0, 4).forEach(news => {
              newsHTML += `
-              <a href="${news.link}" target="_blank" class="vertical-card vc-realtime">
+              <a href="${news.link}" target="_blank" class="vertical-card vc-realtime" style="text-decoration: none;">
                 <div class="emoji-float">🗞️</div>
                 <div>
                   <span class="tip-badge realtime-badge">Berita Terkini</span>
                   <h3 class="tip-title">${news.title.substring(0, 45)}...</h3>
-                  <p class="tip-desc">Diupdate hari ini. Klik untuk baca info selengkapnya.</p>
+                  <p class="tip-desc">Diupdate hari ini. Klik untuk baca selengkapnya.</p>
                 </div>
               </a>
              `;
           });
-          // Tambahkan berita di depan tips statis
+          // Tambahkan berita api di DEPAN kartu statis
           container.innerHTML = newsHTML + container.innerHTML;
         }
       } catch (e) {
-        console.log("Gagal memuat berita real-time, menggunakan data statis.");
+        console.log("Gagal memuat berita real-time. Kartu statis tetap ditampilkan.");
       }
     }
 
@@ -525,8 +554,10 @@
       document.getElementById("adminForm").reset();
       document.getElementById("editItemId").value = "";
       document.getElementById("modalTitle").innerHTML = "📝 Tambah Item Baru";
+      
       currentUploadedImages = [];
-      document.getElementById("imagePreviewContainer").innerHTML = "";
+      renderThumbnails();
+      
       document.getElementById("adminOverlay").style.display = "flex";
     }
 
@@ -541,14 +572,7 @@
         document.getElementById("itemDesc").value = itemToEdit.desc;
 
         currentUploadedImages = itemToEdit.images ? [...itemToEdit.images] : [];
-        const previewContainer = document.getElementById("imagePreviewContainer");
-        previewContainer.innerHTML = "";
-        
-        currentUploadedImages.forEach(imgBase64 => {
-          const imgEl = document.createElement('img');
-          imgEl.src = imgBase64;
-          previewContainer.appendChild(imgEl);
-        });
+        renderThumbnails();
 
         document.getElementById("modalTitle").innerHTML = "✏️ Edit Item";
         document.getElementById("adminOverlay").style.display = "flex";
@@ -616,7 +640,7 @@
 
     // INIT APP
     updateUI();
-    fetchRealtimeNews(); // Panggil fungsi API Berita
+    fetchRealtimeNews(); 
   </script>
 </body>
 </html>
