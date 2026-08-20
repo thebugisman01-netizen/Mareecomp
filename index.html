@@ -17,20 +17,16 @@
       --shadow-hover: 0 20px 40px -5px rgba(32, 95, 154, 0.15);
       --radius-lg: 24px; --radius-md: 16px;
     }
-
     * { box-sizing: border-box; }
     body { margin: 0; color: var(--ink); font-family: "Plus Jakarta Sans", sans-serif; background-color: var(--bg); background-image: radial-gradient(at 0% 0%, hsla(217,100%,94%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(210,100%,95%,1) 0, transparent 50%); background-attachment: fixed; }
     
     .container { max-width: 1180px; margin: 0 auto; padding: 0 1.2rem; }
-    
-    /* Topbar & Logo */
     .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; flex-wrap: wrap; gap: 1rem;}
     .brand-wrap { display: flex; align-items: center; gap: 0.8rem; }
     .logo-icon { width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); }
     .brand { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 1.5rem; color: var(--primary); line-height: 1; letter-spacing: -0.5px;}
     .subtitle { display: block; font-size: 0.75rem; color: var(--ink-light); font-weight: 700; margin-top: 0.3rem; letter-spacing: 1px;}
     
-    /* Buttons */
     .btn { text-decoration: none; border: none; padding: 0.7rem 1.4rem; border-radius: 999px; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.9rem; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
     .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(32, 95, 154, 0.25); }
     .btn-primary:hover { background: var(--primary-hover); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(32, 95, 154, 0.4); }
@@ -41,7 +37,6 @@
     .btn-outline { background: white; border: 2px solid var(--line); color: var(--ink); }
     .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
     
-    /* Hero */
     .hero { background: white; border-radius: var(--radius-lg); padding: clamp(2rem, 5vw, 4rem); margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; box-shadow: var(--shadow-md); overflow: hidden; position: relative; }
     .hero-content { flex: 1; max-width: 550px; z-index: 2; }
     .hero-badge { display: inline-block; background: var(--primary-soft); color: var(--primary); padding: 0.4rem 1rem; border-radius: 999px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 0.5px; }
@@ -51,7 +46,6 @@
     @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
     .hero-illustration svg { width: 100%; height: auto; animation: float 6s ease-in-out infinite; drop-shadow: 0 20px 30px rgba(32, 95, 154, 0.2); }
 
-    /* Filters & Search */
     .section-head { margin: 2rem 0 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
     .section-head h2 { font-family: "Bricolage Grotesque", sans-serif; margin: 0; font-size: 1.8rem;}
     .search-filter-wrap { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; width: 100%; justify-content: flex-end; }
@@ -62,45 +56,52 @@
     .chip:hover { color: var(--ink); background: var(--bg); }
     .chip.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(32, 95, 154, 0.3); }
     
-    /* Catalog Grid & Auto Slider FIX */
     .catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; padding-bottom: 2rem; }
     .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s ease; box-shadow: var(--shadow-sm); }
     .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); border-color: #bfdbfe; }
     
-    .card-img-wrap { width: 100%; aspect-ratio: 9/16; max-height: 280px; background: #e2e8f0; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-    .slider-track { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
-    /* FIX: Force image to exact width of track container and prevent shrinking */
-    .slider-track img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; display: block; }
-    
-    .no-image-text { color: var(--ink-light); font-size: 0.9rem; font-weight: 600; }
-    .img-indicator { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: bold; backdrop-filter: blur(4px); z-index: 2; }
+    .card-icon-wrap { width: 100%; aspect-ratio: 9/16; max-height: 250px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 5.5rem; transition: transform 0.3s ease;}
+    .card:hover .card-icon-wrap { transform: scale(1.05); }
+    .bg-penjualan { background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%); }
+    .bg-jasa { background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%); }
+    .icon-shadow { filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15)); }
 
     .card-content { padding: 1.5rem; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
-    .badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 8px; padding: 0.3rem 0.8rem; font-size: 0.75rem; font-weight: 700; margin-bottom: 12px; letter-spacing: 0.5px; width: fit-content;}
+    .badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 8px; padding: 0.3rem 0.8rem; font-size: 0.75rem; font-weight: 700; margin-bottom: 12px; letter-spacing: 0.5px; width: fit-content; text-transform: uppercase;}
     .badge.penjualan { background: #dbeafe; color: #1e40af; } 
     .badge.jasa { background: #fef3c7; color: #b45309; } 
     .title { margin: 0 0 0.4rem; font-family: "Bricolage Grotesque", sans-serif; font-size: 1.3rem; line-height: 1.3;}
     .spec { color: var(--ink-light); font-size: 0.9rem; margin: 0 0 8px 0; line-height: 1.5; font-weight: 600;}
-    .desc { color: var(--ink-light); font-size: 0.85rem; margin: 0; line-height: 1.5; transition: 0.3s ease;}
+    .desc { color: var(--ink-light); font-size: 0.85rem; margin: 0; line-height: 1.5; transition: 0.3s ease; white-space: pre-line;}
     .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .read-more-btn { color: var(--primary); font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-block; margin-top: 5px; background: none; border: none; padding: 0; }
     .read-more-btn:hover { text-decoration: underline; color: var(--primary-hover); }
     .price { margin: 15px 0; font-family: "Bricolage Grotesque", sans-serif; font-size: 1.5rem; color: var(--primary); font-weight: 800;}
+    
     .card-action { display: flex; gap: 0.5rem; margin-top: 15px; flex-wrap: wrap; }
     .card-action .btn { flex: 1; min-width: 80px; padding: 0.6rem; font-size: 0.85rem;} 
-    
-    /* Footer */
+
+    .loading-state { grid-column: 1/-1; text-align: center; padding: 4rem 1rem; color: var(--ink-light); font-weight: 600; font-size: 1.1rem; border: 2px dashed var(--line); border-radius: var(--radius-md);}
+
+    /* MODAL CSS */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; display: none; justify-content: center; align-items: center; padding: 1rem; }
+    .modal-box { background: white; border-radius: var(--radius-lg); padding: 2.5rem; width: 100%; max-width: 500px; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); max-height: 90vh; overflow-y: auto; }
+    .modal-box h2 { margin-top: 0; font-family: "Bricolage Grotesque"; color: var(--ink); }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--ink-light); }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.9rem; border-radius: 12px; border: 2px solid var(--line); background: #f8fafc; color: var(--ink); font-family: inherit; transition: 0.2s; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); background: white; }
+    .close-btn { position: absolute; top: 20px; right: 25px; background: #f1f5f9; border: none; color: var(--ink-light); font-size: 1.2rem; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .close-btn:hover { background: #e2e8f0; color: var(--ink); }
+    .admin-only { display: none; }
+
     footer { background: var(--panel); padding: 3rem 1.2rem; margin-top: 2rem; border-top: 1px solid var(--line); }
     .footer-content { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
     .footer-col h3 { font-family: "Bricolage Grotesque"; margin-top: 0; color: var(--primary); font-size: 1.2rem;}
     .footer-col p { color: var(--ink-light); font-size: 0.95rem; line-height: 1.6; }
     
-    /* Tips & Realtime Section */
     .tips-section { padding-bottom: 2rem; }
     .scroll-container { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1.5rem; scrollbar-width: thin; scrollbar-color: var(--primary) transparent; padding-top: 10px; }
-    .scroll-container::-webkit-scrollbar { height: 8px; }
-    .scroll-container::-webkit-scrollbar-track { background: transparent; }
-    .scroll-container::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
     .vertical-card { border-radius: var(--radius-md); flex: 0 0 auto; width: 220px; aspect-ratio: 9/16; padding: 1.5rem; display: flex; flex-direction: column; justify-content: flex-end; position: relative; overflow: hidden; transition: 0.3s ease; box-shadow: var(--shadow-md); color: white; text-decoration: none;}
     .vertical-card:hover { transform: translateY(-10px) rotate(1deg); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
     .vc-1 { background: linear-gradient(145deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%); color: #6b21a8; }
@@ -114,25 +115,6 @@
     .tip-badge.realtime-badge { background: rgba(59, 130, 246, 0.3); color: #93c5fd; border: 1px solid #3b82f6;}
     .tip-title { font-family: "Bricolage Grotesque"; font-size: 1.2rem; margin: 0 0 0.5rem 0; line-height: 1.3;}
     .tip-desc { font-size: 0.85rem; margin: 0; line-height: 1.4; opacity: 0.9; font-weight: 500;}
-
-    /* Modals */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; display: none; justify-content: center; align-items: center; padding: 1rem; }
-    .modal-box { background: white; border-radius: var(--radius-lg); padding: 2.5rem; width: 100%; max-width: 500px; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); max-height: 90vh; overflow-y: auto; }
-    .modal-box h2 { margin-top: 0; font-family: "Bricolage Grotesque"; color: var(--ink); }
-    .form-group { margin-bottom: 1.2rem; }
-    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--ink-light); }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.9rem; border-radius: 12px; border: 2px solid var(--line); background: #f8fafc; color: var(--ink); font-family: inherit; transition: 0.2s; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); background: white; }
-    .close-btn { position: absolute; top: 20px; right: 25px; background: #f1f5f9; border: none; color: var(--ink-light); font-size: 1.2rem; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .close-btn:hover { background: #e2e8f0; color: var(--ink); }
-    .admin-only { display: none; }
-    
-    /* Upload Thumbnails */
-    .thumbnail-container { display: flex; gap: 10px; overflow-x: auto; margin-top: 10px; padding-bottom: 5px; }
-    .thumbnail-wrapper { position: relative; flex-shrink: 0; }
-    .thumbnail-wrapper img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid var(--line); }
-    .delete-thumb-btn { position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: 0.2s;}
-    .delete-thumb-btn:hover { transform: scale(1.1); background: #dc2626; }
 
     @media (max-width: 768px) {
       .hero { flex-direction: column-reverse; text-align: center; padding: 2rem 1.5rem; }
@@ -166,6 +148,7 @@
           <small class="subtitle">LAPTOP • REPAIR • UPGRADE</small>
         </div>
       </div>
+      
       <div style="display: flex; gap: 10px; flex-wrap: wrap;">
         <button class="btn btn-outline" id="btnLogin" onclick="openLoginModal()">⚙️ Admin</button>
         <button class="btn btn-outline" id="btnLogout" onclick="logoutAdmin()" style="display:none;">🔒 Logout</button>
@@ -177,7 +160,7 @@
       <div class="hero-content">
         <span class="hero-badge">👋 Halo! Selamat Datang di Mareecomp</span>
         <h1>Pusat Jual & Rawat Laptop Terpercaya.</h1>
-        <p>Temukan laptop best seller seperti Lenovo X280 & X390, atau percayakan servis dan upgrade perangkatmu kepada teknisi handal kami.</p>
+        <p>Temukan laptop best seller atau percayakan servis dan upgrade perangkatmu kepada teknisi handal kami.</p>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
           <a href="#katalog" class="btn btn-primary">Lihat Katalog ↓</a>
           <a href="https://wa.me/6289654136885" class="btn btn-outline">Konsultasi WA 💬</a>
@@ -214,24 +197,26 @@
           <input type="text" id="searchInput" class="search-bar" placeholder="🔍 Cari laptop atau servis...">
           <div class="filters">
             <button class="chip active" data-filter="semua">Semua</button>
-            <button class="chip" data-filter="penjualan">📦 Penjualan</button>
+            <button class="chip" data-filter="penjualan">💻 Penjualan</button>
             <button class="chip" data-filter="jasa">🔧 Jasa</button>
           </div>
         </div>
       </div>
       
-      <div id="catalog" class="catalog"></div>
+      <!-- AREA KATALOG -->
+      <div id="catalog" class="catalog">
+         <div class="loading-state">Menarik data dari Database... 🔄</div>
+      </div>
+
     </section>
 
     <section class="tips-section">
       <div class="section-head">
         <div>
           <h2>Tips & Info Tech Real-time 🌐</h2>
-          <p style="color: var(--ink-light); margin: 5px 0 0; font-size: 0.95rem;">Berita terkini langsung dari portal teknologi.</p>
         </div>
       </div>
       <div class="scroll-container" id="newsContainer">
-        <!-- 4 Kartu Statis Selalu Tampil -->
         <div class="vertical-card vc-1"><div class="emoji-float">🥶</div><div><span class="tip-badge">Perawatan</span><h3 class="tip-title">Ganti Pasta</h3><p class="tip-desc">Laptop cepat panas? Waktunya ganti thermal paste.</p></div></div>
         <div class="vertical-card vc-2"><div class="emoji-float">🔋</div><div><span class="tip-badge">Baterai</span><h3 class="tip-title">Biar Awet!</h3><p class="tip-desc">Gunakan fitur "Battery Conservation" agar tertahan 80%.</p></div></div>
         <div class="vertical-card vc-3"><div class="emoji-float">🚀</div><div><span class="tip-badge">Upgrade</span><h3 class="tip-title">Wajib SSD</h3><p class="tip-desc">Pindah ke SSD bikin laptop tua jadi super ngebut.</p></div></div>
@@ -240,12 +225,11 @@
     </section>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-content">
       <div class="footer-col">
         <h3>MAREECOMP</h3>
-        <p>Solusi jual beli laptop second dan jasa perbaikan terpercaya untuk harian, sekolah, dan kerja. Komitmen kami memberikan layanan terbaik dan jujur.</p>
+        <p>Solusi jual beli laptop second dan jasa perbaikan terpercaya.</p>
       </div>
       <div class="footer-col">
         <h3>📍 Lokasi & Kontak</h3>
@@ -254,12 +238,12 @@
       </div>
       <div class="footer-col">
         <h3>🕒 Jam Operasional</h3>
-        <p>Senin - Sabtu: 09.00 - 18.00 WIB<br>Minggu / Tanggal Merah: Tutup (Kecuali Janji Temu)</p>
+        <p>Senin - Sabtu: 09.00 - 18.00 WIB</p>
       </div>
     </div>
   </footer>
 
-  <!-- MODALS -->
+  <!-- MODAL LOGIN ADMIN -->
   <div class="modal-overlay" id="loginOverlay">
     <div class="modal-box">
       <button class="close-btn" onclick="closeModals()">✕</button>
@@ -271,6 +255,7 @@
     </div>
   </div>
 
+  <!-- MODAL TAMBAH / EDIT ITEM -->
   <div class="modal-overlay" id="adminOverlay">
     <div class="modal-box">
       <button class="close-btn" onclick="closeModals()">✕</button>
@@ -280,20 +265,10 @@
         <div class="form-group">
           <label>Tipe Katalog</label>
           <select id="itemType">
-            <option value="penjualan">📦 Penjualan</option>
+            <option value="penjualan">💻 Penjualan</option>
             <option value="jasa">🔧 Jasa</option>
           </select>
         </div>
-        
-        <div class="form-group">
-          <label>Unggah Foto (Bisa pilih lebih dari 1)</label>
-          <input type="file" id="itemImage" accept="image/*" multiple style="padding: 0.5rem; background: white;">
-          <small style="color: var(--ink-light); display:block; margin-top:5px;">Foto akan otomatis dikompres agar memori browser tidak penuh. Klik tombol ✕ merah untuk menghapus foto yang salah pilih.</small>
-          
-          <!-- THUMBNAIL PREVIEW AREA -->
-          <div id="imagePreviewContainer" class="thumbnail-container"></div>
-        </div>
-
         <div class="form-group">
           <label>Nama Produk / Jasa</label>
           <input type="text" id="itemTitle" required>
@@ -310,104 +285,130 @@
           <label>Deskripsi Tambahan</label>
           <textarea id="itemDesc" rows="4" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem;">💾 Simpan</button>
+        <button type="submit" class="btn btn-primary" id="btnSimpan" style="width: 100%; padding: 0.9rem;">💾 Simpan Katalog</button>
       </form>
     </div>
   </div>
 
   <script>
-    const defaultItems = [
-      { id: 1, type: "penjualan", title: "Lenovo ThinkPad X280", spec: "Core i5 Gen 8, RAM 8GB, SSD 256GB", price: "Rp 3.300.000", desc: "Desain tipis, ringan, & tangguh. Cocok untuk kerja mobile dan nugas kuliah kampus. Keyboard super empuk khas ThinkPad bikin ngetik lama gak capek.", images: [] },
-      { id: 2, type: "jasa", title: "Install Ulang & Setup", spec: "Windows + Driver + MS Office", price: "Rp 150.000", desc: "Pembersihan total software lama yang lemot. Laptop kembali fresh siap tempur. Sudah termasuk aplikasi standar seperti browser dan antivirus.", images: [] }
-    ];
-
-    let items = JSON.parse(localStorage.getItem("mareecomp_data")) || defaultItems;
-    items = items.map(item => {
-      if(item.image && !item.images) item.images = [item.image];
-      if(!item.images) item.images = [];
-      return item;
-    });
-
+    // =========================================================================
+    // 👇 MASUKKAN LINK WEB APP (URL APPS SCRIPT) KAMU DI SINI 👇
+    // =========================================================================
+    const appsScriptUrl = "https://script.google.com/macros/s/AKfycbzYQ11EzvykvoODXfteh2GQC3xR4rDwlJ5NYz2WNxMtfvpWNptD_TfsvRlx2dHWadBt/exec"; 
+    
+    let items = [];
     let isAdmin = localStorage.getItem("mareecomp_admin") === "true"; 
     let activeFilter = "semua";
     let searchQuery = "";
-    let currentUploadedImages = []; 
 
     const catalog = document.getElementById("catalog");
     const chips = document.querySelectorAll(".chip");
     const searchInput = document.getElementById("searchInput");
-    
-    // Format Rupiah
+
+    // Format Harga Otomatis
     document.getElementById("itemPrice").addEventListener("input", function(e) {
       let numericValue = this.value.replace(/[^0-9]/g, "");
       this.value = numericValue ? "Rp " + parseInt(numericValue, 10).toLocaleString('id-ID') : "";
     });
 
-    // RENDER THUMBNAILS & FITUR HAPUS FOTO
-    function renderThumbnails() {
-      const previewContainer = document.getElementById("imagePreviewContainer");
-      previewContainer.innerHTML = "";
-      
-      currentUploadedImages.forEach((imgBase64, index) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'thumbnail-wrapper';
-        
-        const imgEl = document.createElement('img');
-        imgEl.src = imgBase64;
-        
-        const delBtn = document.createElement('button');
-        delBtn.className = 'delete-thumb-btn';
-        delBtn.innerHTML = '✕';
-        delBtn.type = 'button'; // Penting: mencegah form otomatis ke-submit saat diklik
-        delBtn.onclick = function() {
-          currentUploadedImages.splice(index, 1); // Hapus gambar spesifik dari array
-          renderThumbnails(); // Render ulang thumbnail
-        };
-        
-        wrapper.appendChild(imgEl);
-        wrapper.appendChild(delBtn);
-        previewContainer.appendChild(wrapper);
-      });
-    }
-
-    // Kompresi Gambar
-    function compressImage(file, callback) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 500;
-          const MAX_HEIGHT = 700;
-          let width = img.width;
-          let height = img.height;
-          
-          if (width > height) {
-            if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-          } else {
-            if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-          }
-          canvas.width = width; canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          callback(canvas.toDataURL('image/jpeg', 0.6));
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // Multi Image Upload Event
-    document.getElementById("itemImage").addEventListener("change", function(e) {
-      const files = e.target.files;
-      for(let i=0; i<files.length; i++) {
-        compressImage(files[i], function(compressedBase64) {
-          currentUploadedImages.push(compressedBase64);
-          renderThumbnails();
-        });
+    // FUNGSI MEMBACA DATA DARI DATABASE GOOGLE SHEETS
+    async function loadDataFromAppsScript() {
+      if(appsScriptUrl === "https://script.google.com/macros/s/AKfycbzYQ11EzvykvoODXfteh2GQC3xR4rDwlJ5NYz2WNxMtfvpWNptD_TfsvRlx2dHWadBt/exec") {
+         catalog.innerHTML = `<div class="loading-state" style="color:var(--danger)">⚠️ Error: Link Apps Script belum dimasukkan.</div>`;
+         return;
       }
-      this.value = ""; 
+
+      catalog.innerHTML = `<div class="loading-state">Menarik data dari Database... 🔄</div>`;
+      
+      try {
+        const response = await fetch(appsScriptUrl);
+        const data = await response.json();
+        
+        items = data.map(row => {
+          return {
+            id: row.id,
+            type: (row.tipe || "penjualan").toLowerCase().trim(),
+            title: row.judul || "Tanpa Nama",
+            spec: row.spek || "-",
+            price: row.harga || "Rp 0",
+            desc: row.deskripsi || ""
+          }
+        });
+        
+        renderItems();
+      } catch (err) {
+        catalog.innerHTML = `<div class="loading-state">Toko belum memiliki barang atau koneksi database error.</div>`;
+      }
+    }
+
+  // FUNGSI MENYIMPAN (TAMBAH/EDIT) KE DATABASE GOOGLE SHEETS
+document.getElementById("adminForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  
+  const btn = document.getElementById("btnSimpan");
+  btn.innerText = "⏳ Menyimpan ke Database...";
+  btn.disabled = true;
+
+  const editId = document.getElementById("editItemId").value;
+  const newId = editId ? editId : new Date().getTime().toString(); 
+  const actionType = editId ? "edit" : "add";
+
+  const payload = {
+    action: actionType,
+    id: newId,
+    type: document.getElementById("itemType").value,
+    title: document.getElementById("itemTitle").value,
+    spec: document.getElementById("itemSpec").value,
+    price: document.getElementById("itemPrice").value,
+    desc: document.getElementById("itemDesc").value
+  };
+
+  try {
+    // Menggunakan URLSearchParams & mode no-cors agar lolos dari aturan CORS browser
+    const formData = new URLSearchParams();
+    formData.append("data", JSON.stringify(payload));
+
+    await fetch(appsScriptUrl, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: formData.toString()
     });
+    
+    alert("Data berhasil dikirim!");
+    closeModals();
+    setTimeout(() => { loadDataFromAppsScript(); }, 1500); // Beri jeda 1.5 detik agar Google Sheets selesai memproses
+  } catch (err) {
+    alert("Gagal menyimpan data! Pastikan koneksi internet lancar.");
+  } finally {
+    btn.innerText = "💾 Simpan Katalog";
+    btn.disabled = false;
+  }
+});
+
+    // FUNGSI HAPUS DARI DATABASE GOOGLE SHEETS
+    window.deleteItem = async function(id) {
+      if(confirm("Yakin ingin menghapus item ini dari database?")) {
+        // Tampilkan status sedang menghapus pada layar
+        catalog.innerHTML = `<div class="loading-state">⏳ Menghapus dari Database...</div>`;
+        
+        const payload = { action: "delete", id: id.toString() };
+        
+        try {
+          await fetch(appsScriptUrl, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+          });
+          loadDataFromAppsScript();
+        } catch (err) {
+          alert("Gagal menghapus data.");
+          loadDataFromAppsScript();
+        }
+      }
+    }
 
     window.toggleDesc = function(btn) {
       const descEl = btn.previousElementSibling;
@@ -421,7 +422,6 @@
 
     function renderItems() {
       catalog.innerHTML = "";
-      
       let filtered = items;
       if (activeFilter !== "semua") filtered = filtered.filter(i => i.type === activeFilter);
       if (searchQuery.trim() !== "") {
@@ -429,7 +429,7 @@
       }
 
       if (filtered.length === 0) {
-        catalog.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 2rem; color: var(--ink-light);">Pencarian tidak ditemukan.</div>`;
+        catalog.innerHTML = `<div class="loading-state">Belum ada barang di Database. Silakan tambah item baru.</div>`;
         return;
       }
 
@@ -437,27 +437,13 @@
         const card = document.createElement("div");
         card.className = "card";
         
-        const badgeIcon = item.type === 'penjualan' ? '📦' : '🔧';
-        const adminButtonsHTML = isAdmin ? `
-          <button onclick="editItem(${item.id})" class="btn btn-warning">✏️ Edit</button>
-          <button onclick="deleteItem(${item.id})" class="btn btn-danger">🗑️</button>
-        ` : '';
+        const badgeIcon = item.type === 'penjualan' ? '💻' : '🔧';
+        const bgClass = item.type === 'penjualan' ? 'bg-penjualan' : 'bg-jasa';
 
-        // FIX: Logic Auto Slide (Carousel) menggunakan width: 100% dan flex-shrink: 0
-        let imageHTML = `<span class="no-image-text">Tidak ada foto</span>`;
-        if (item.images && item.images.length > 0) {
-          if (item.images.length === 1) {
-            imageHTML = `<img src="${item.images[0]}" alt="${item.title}" loading="lazy">`;
-          } else {
-            let imagesTags = item.images.map(img => `<img src="${img}" alt="${item.title}" loading="lazy">`).join('');
-            imageHTML = `
-              <div class="slider-track" data-count="${item.images.length}" data-current="0">
-                ${imagesTags}
-              </div>
-              <span class="img-indicator">1 / ${item.images.length}</span>
-            `;
-          }
-        }
+        const adminButtonsHTML = isAdmin ? `
+          <button onclick="editItem('${item.id}')" class="btn btn-warning">✏️ Edit</button>
+          <button onclick="deleteItem('${item.id}')" class="btn btn-danger">🗑️</button>
+        ` : '';
 
         const isLongText = item.desc.length > 70;
         const descHTML = `
@@ -468,7 +454,9 @@
         `;
 
         card.innerHTML = `
-          <div class="card-img-wrap auto-slider-wrap">${imageHTML}</div>
+          <div class="card-icon-wrap ${bgClass}">
+             <span class="icon-shadow">${badgeIcon}</span>
+          </div>
           <div class="card-content">
             <div>
               <span class="badge ${item.type}">${badgeIcon} ${item.type.toUpperCase()}</span>
@@ -478,7 +466,7 @@
               <div class="price">${item.price}</div>
             </div>
             <div class="card-action">
-              <a class="btn btn-primary" style="flex:2;" href="${waLink(item.title)}">Pesan WA 💬</a>
+              <a class="btn btn-primary" style="flex: 2;" href="${waLink(item.title)}">Pesan Via WhatsApp 💬</a>
               ${adminButtonsHTML}
             </div>
           </div>
@@ -487,65 +475,13 @@
       });
     }
 
-    // FIX: Auto-Slide Javascript Logic
-    setInterval(() => {
-      document.querySelectorAll('.slider-track').forEach(track => {
-        let count = parseInt(track.dataset.count);
-        if (count > 1) {
-          let current = parseInt(track.dataset.current);
-          current = (current + 1) % count;
-          track.dataset.current = current;
-          
-          // Karena lebar track dan img adalah 100% parent, kita translate sejauh 100% dikali index
-          track.style.transform = `translateX(-${current * 100}%)`;
-          
-          const indicator = track.nextElementSibling;
-          if(indicator && indicator.classList.contains('img-indicator')) {
-             indicator.innerText = `${current + 1} / ${count}`;
-          }
-        }
-      });
-    }, 3000);
-
-    // FETCH REAL-TIME TECH NEWS
-    async function fetchRealtimeNews() {
-      const container = document.getElementById("newsContainer");
-      try {
-        const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.suara.com%2Frss%2Ftekno');
-        if (!res.ok) throw new Error("Gagal mengambil data");
-        
-        const data = await res.json();
-        if(data.items && data.items.length > 0) {
-          let newsHTML = "";
-          data.items.slice(0, 4).forEach(news => {
-             newsHTML += `
-              <a href="${news.link}" target="_blank" class="vertical-card vc-realtime" style="text-decoration: none;">
-                <div class="emoji-float">🗞️</div>
-                <div>
-                  <span class="tip-badge realtime-badge">Berita Terkini</span>
-                  <h3 class="tip-title">${news.title.substring(0, 45)}...</h3>
-                  <p class="tip-desc">Diupdate hari ini. Klik untuk baca selengkapnya.</p>
-                </div>
-              </a>
-             `;
-          });
-          // Tambahkan berita api di DEPAN kartu statis
-          container.innerHTML = newsHTML + container.innerHTML;
-        }
-      } catch (e) {
-        console.log("Gagal memuat berita real-time. Kartu statis tetap ditampilkan.");
-      }
-    }
-
-    searchInput.addEventListener("input", (e) => { searchQuery = e.target.value.toLowerCase(); renderItems(); });
-    chips.forEach((chip) => { chip.addEventListener("click", () => { activeFilter = chip.dataset.filter; chips.forEach((btn) => btn.classList.toggle("active", btn === chip)); renderItems(); }); });
-
+    // LOGIKA TAMPILAN ADMIN
     function updateUI() {
       const adminElements = document.querySelectorAll('.admin-only');
       adminElements.forEach(el => el.style.display = isAdmin ? 'inline-flex' : 'none');
       document.getElementById('btnLogin').style.display = isAdmin ? 'none' : 'inline-flex';
       document.getElementById('btnLogout').style.display = isAdmin ? 'inline-flex' : 'none';
-      renderItems(); 
+      if(items.length > 0) renderItems(); 
     }
 
     function openLoginModal() { document.getElementById("loginOverlay").style.display = "flex"; }
@@ -554,15 +490,11 @@
       document.getElementById("adminForm").reset();
       document.getElementById("editItemId").value = "";
       document.getElementById("modalTitle").innerHTML = "📝 Tambah Item Baru";
-      
-      currentUploadedImages = [];
-      renderThumbnails();
-      
       document.getElementById("adminOverlay").style.display = "flex";
     }
 
-    function editItem(id) {
-      const itemToEdit = items.find(item => item.id === id);
+    window.editItem = function(id) {
+      const itemToEdit = items.find(item => item.id == id);
       if(itemToEdit) {
         document.getElementById("editItemId").value = itemToEdit.id;
         document.getElementById("itemType").value = itemToEdit.type;
@@ -570,10 +502,7 @@
         document.getElementById("itemSpec").value = itemToEdit.spec;
         document.getElementById("itemPrice").value = itemToEdit.price;
         document.getElementById("itemDesc").value = itemToEdit.desc;
-
-        currentUploadedImages = itemToEdit.images ? [...itemToEdit.images] : [];
-        renderThumbnails();
-
+        
         document.getElementById("modalTitle").innerHTML = "✏️ Edit Item";
         document.getElementById("adminOverlay").style.display = "flex";
       }
@@ -600,47 +529,12 @@
       updateUI();
     }
 
-    function saveData() {
-      try {
-        localStorage.setItem("mareecomp_data", JSON.stringify(items));
-        renderItems();
-      } catch (e) {
-        alert("Gagal menyimpan! Memori penuh, hapus beberapa foto/item lama.");
-      }
-    }
+    searchInput.addEventListener("input", (e) => { searchQuery = e.target.value.toLowerCase(); renderItems(); });
+    chips.forEach((chip) => { chip.addEventListener("click", () => { activeFilter = chip.dataset.filter; chips.forEach((btn) => btn.classList.toggle("active", btn === chip)); renderItems(); }); });
 
-    document.getElementById("adminForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const editId = document.getElementById("editItemId").value;
-      const formData = {
-        type: document.getElementById("itemType").value,
-        title: document.getElementById("itemTitle").value,
-        spec: document.getElementById("itemSpec").value,
-        price: document.getElementById("itemPrice").value,
-        desc: document.getElementById("itemDesc").value,
-        images: currentUploadedImages
-      };
-
-      if(editId) {
-        const index = items.findIndex(item => item.id == editId);
-        if(index !== -1) items[index] = { ...items[index], ...formData };
-      } else {
-        items.push({ id: Date.now(), ...formData });
-      }
-      saveData();
-      closeModals();
-    });
-
-    function deleteItem(id) {
-      if(confirm("Yakin ingin menghapus item ini?")) {
-        items = items.filter(item => item.id !== id);
-        saveData();
-      }
-    }
-
-    // INIT APP
+    // JALANKAN SAAT WEBSITE DIBUKA
     updateUI();
-    fetchRealtimeNews(); 
+    loadDataFromAppsScript();
   </script>
 </body>
 </html>
