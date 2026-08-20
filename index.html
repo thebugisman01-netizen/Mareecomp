@@ -1,685 +1,547 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Katalog Penjualan & Jasa | MAREECOMP</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --bg: #041224;
-        --ink: #dbe9ff;
-        --panel: #0a1f3f;
-        --line: #1f3f6f;
-        --primary: #2a9bff;
-        --primary-soft: #153465;
-        --accent: #62dbff;
-        --muted: #8eb1de;
-        --shadow: 0 18px 34px rgba(3, 14, 29, 0.45);
-        --radius-lg: 26px;
-        --radius-md: 16px;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        color: var(--ink);
-        font-family: "IBM Plex Sans", sans-serif;
-        background:
-          radial-gradient(circle at 12% 15%, #0f3266 0 18%, transparent 46%),
-          radial-gradient(circle at 85% 0%, #1462b8 0 20%, transparent 44%),
-          var(--bg);
-      }
-
-      .grain {
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        z-index: 0;
-        opacity: 0.2;
-        background-image: radial-gradient(#73b3ff 0.6px, transparent 0.6px);
-        background-size: 3px 3px;
-      }
-
-      .container {
-        max-width: 1180px;
-        margin: 0 auto;
-        padding: 0 1.1rem;
-        position: relative;
-        z-index: 1;
-      }
-
-      .topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 0;
-        gap: 1rem;
-        animation: fadeSlideUp 0.6s ease both;
-      }
-
-      .brand-wrap {
-        display: flex;
-        align-items: center;
-        gap: 0.9rem;
-      }
-
-      .brand-logo {
-        width: 56px;
-        height: 56px;
-        border-radius: 15px;
-        object-fit: cover;
-        border: 1px solid #2d69b8;
-        box-shadow: 0 8px 24px rgba(34, 120, 206, 0.32);
-        animation: glowPulse 3s ease-in-out infinite;
-        transition: transform 0.3s ease;
-      }
-
-      .brand-logo:hover {
-        transform: scale(1.08) rotate(-2deg);
-      }
-
-      .brand {
-        font-family: "Bricolage Grotesque", sans-serif;
-        font-weight: 800;
-        letter-spacing: 0.02em;
-        font-size: clamp(1.1rem, 3vw, 1.5rem);
-        animation: textGlow 4s ease-in-out infinite;
-      }
-
-      .subtitle {
-        display: block;
-        font-size: 0.78rem;
-        color: var(--muted);
-        font-weight: 500;
-        margin-top: 0.25rem;
-      }
-
-      .cta,
-      .quick-link {
-        text-decoration: none;
-        color: #041024;
-        background: linear-gradient(135deg, #2a9bff, #62dbff);
-        border: 1px solid #49a7ff;
-        padding: 0.7rem 1rem;
-        border-radius: 999px;
-        font-weight: 600;
-        transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.3s ease;
-        background-size: 200% 100%;
-        background-position: left;
-      }
-
-      .cta:hover,
-      .quick-link:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 24px rgba(40, 151, 255, 0.38), 0 0 12px rgba(98, 219, 255, 0.2);
-        background-position: right;
-      }
-
-      .hero {
-        background: linear-gradient(135deg, #081b39 0%, #10366a 58%, #1f6fc0 100%);
-        color: #f3f8ff;
-        border-radius: var(--radius-lg);
-        padding: clamp(1.6rem, 4vw, 2.6rem);
-        display: grid;
-        grid-template-columns: 1.35fr 1fr;
-        gap: 1.2rem;
-        margin-bottom: 1.2rem;
-        overflow: hidden;
-        animation: fadeSlideUp 0.7s ease 0.15s both;
-        position: relative;
-      }
-
-      .hero::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: var(--radius-lg);
-        background: repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(42, 155, 255, 0.03) 2px,
-          rgba(42, 155, 255, 0.03) 4px
-        );
-        background-size: 100% 4px;
-        animation: scanline 8s linear infinite;
-        pointer-events: none;
-      }
-
-      .hero h1 {
-        font-family: "Bricolage Grotesque", sans-serif;
-        margin: 0;
-        line-height: 1.08;
-        font-size: clamp(1.9rem, 4.5vw, 3.2rem);
-        animation: fadeSlideRight 0.8s ease 0.3s both;
-      }
-
-      .hero p {
-        margin: 0.9rem 0 0;
-        color: #c8e3ff;
-        max-width: 48ch;
-        animation: fadeSlideRight 0.8s ease 0.45s both;
-      }
-
-      .hero-meta {
-        align-self: end;
-        justify-self: end;
-        width: 100%;
-        display: grid;
-        gap: 0.75rem;
-      }
-
-      .meta-box {
-        background: rgba(55, 124, 204, 0.18);
-        border: 1px solid rgba(145, 203, 255, 0.34);
-        border-radius: var(--radius-md);
-        padding: 0.8rem 1rem;
-        animation: fadeSlideUp 0.6s ease 0.5s both;
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-      }
-
-      .meta-box:nth-child(2) {
-        animation-delay: 0.65s;
-      }
-
-      .meta-box:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(42, 155, 255, 0.2);
-      }
-
-      .meta-label {
-        font-size: 0.75rem;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        opacity: 0.88;
-      }
-
-      .meta-value {
-        font-family: "Bricolage Grotesque", sans-serif;
-        font-size: 1.38rem;
-        margin-top: 0.2rem;
-        font-weight: 700;
-      }
-
-      .section-head {
-        margin: 1.5rem 0 0.9rem;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 0.8rem;
-        animation: fadeSlideUp 0.6s ease 0.3s both;
-      }
-
-      .section-head h2 {
-        margin: 0;
-        font-family: "Bricolage Grotesque", sans-serif;
-        font-size: clamp(1.3rem, 3vw, 1.9rem);
-      }
-
-      .section-head p {
-        margin: 0.4rem 0 0;
-        color: var(--muted);
-      }
-
-      .filters {
-        display: flex;
-        gap: 0.6rem;
-        flex-wrap: wrap;
-      }
-
-      .chip {
-        border: 1px solid var(--line);
-        background: #092144;
-        color: var(--ink);
-        padding: 0.54rem 0.9rem;
-        border-radius: 999px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.25s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .chip::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: 999px;
-        background: radial-gradient(circle at center, rgba(42, 155, 255, 0.25), transparent 70%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .chip:hover {
-        border-color: var(--primary);
-        transform: translateY(-1px);
-      }
-
-      .chip:hover::after {
-        opacity: 1;
-      }
-
-      .chip.active {
-        color: #061228;
-        background: var(--primary);
-        border-color: var(--primary);
-      }
-
-      .chip.active::after {
-        opacity: 0;
-      }
-
-      .catalog {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 0.95rem;
-        padding-bottom: 2.8rem;
-      }
-
-      .card,
-      .skeleton,
-      .empty-state {
-        background: var(--panel);
-        border: 1px solid var(--line);
-        border-radius: var(--radius-md);
-      }
-
-      .card {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        min-height: 270px;
-        padding: 1rem;
-        box-shadow: var(--shadow);
-        transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
-        animation: rise 0.5s ease both;
-      }
-
-      .card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 40px rgba(3, 14, 29, 0.55), 0 0 20px rgba(42, 155, 255, 0.12);
-        border-color: rgba(42, 155, 255, 0.4);
-      }
-
-      @keyframes rise {
-        from {
-          opacity: 0;
-          transform: translateY(12px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes fadeSlideUp {
-        from {
-          opacity: 0;
-          transform: translateY(28px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes fadeSlideRight {
-        from {
-          opacity: 0;
-          transform: translateX(-28px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-
-      @keyframes glowPulse {
-        0%, 100% {
-          box-shadow: 0 0 12px rgba(42, 155, 255, 0.15);
-        }
-        50% {
-          box-shadow: 0 0 28px rgba(42, 155, 255, 0.4), 0 0 56px rgba(98, 219, 255, 0.15);
-        }
-      }
-
-      @keyframes floatBounce {
-        0%, 100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-6px);
-        }
-      }
-
-      @keyframes textGlow {
-        0%, 100% {
-          text-shadow: 0 0 8px rgba(42, 155, 255, 0.2);
-        }
-        50% {
-          text-shadow: 0 0 20px rgba(42, 155, 255, 0.5), 0 0 40px rgba(98, 219, 255, 0.2);
-        }
-      }
-
-      @keyframes scanline {
-        0% {
-          background-position: 0 0;
-        }
-        100% {
-          background-position: 0 100%;
-        }
-      }
-
-      .badge {
-        width: fit-content;
-        border-radius: 999px;
-        padding: 0.28rem 0.72rem;
-        font-size: 0.73rem;
-        font-weight: 700;
-        letter-spacing: 0.02em;
-        transition: transform 0.2s ease;
-      }
-
-      .badge:hover {
-        transform: scale(1.05);
-      }
-
-      .badge.penjualan {
-        background: #133a74;
-        color: #89c8ff;
-      }
-
-      .badge.jasa {
-        background: var(--primary-soft);
-        color: #8dc2ff;
-      }
-
-      .title {
-        margin: 0.82rem 0 0.3rem;
-        font-family: "Bricolage Grotesque", sans-serif;
-        font-size: 1.1rem;
-      }
-
-      .spec {
-        margin: 0;
-        color: var(--muted);
-        font-size: 0.9rem;
-      }
-
-      .price {
-        margin: 1rem 0 0.55rem;
-        font-family: "Bricolage Grotesque", sans-serif;
-        font-size: 1.35rem;
-        background: linear-gradient(90deg, #2a9bff, #62dbff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-
-      .desc {
-        margin: 0;
-        color: #bad8ff;
-        font-size: 0.92rem;
-      }
-
-      .card-action {
-        margin-top: 1rem;
-      }
-
-      .quick-link {
-        font-size: 0.9rem;
-        display: inline-block;
-      }
-
-      .skeleton {
-        min-height: 270px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .skeleton::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        transform: translateX(-100%);
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
-        animation: shine 1.2s infinite;
-      }
-
-      @keyframes shine {
-        to {
-          transform: translateX(100%);
-        }
-      }
-
-      .empty-state {
-        grid-column: 1 / -1;
-        padding: 1.4rem;
-      }
-
-      .empty-state h3 {
-        margin: 0;
-        font-family: "Bricolage Grotesque", sans-serif;
-      }
-
-      .empty-state p {
-        margin: 0.5rem 0 0;
-        color: var(--muted);
-      }
-
-      .floating-wa {
-        position: fixed;
-        right: 1rem;
-        bottom: 1rem;
-        z-index: 4;
-        animation: floatBounce 2.5s ease-in-out infinite, glowPulse 3s ease-in-out infinite;
-      }
-
-      footer {
-        color: #8fb0dd;
-        font-size: 0.85rem;
-        text-align: center;
-        padding: 1.5rem 1rem 2.5rem;
-        animation: fadeSlideUp 0.6s ease 0.8s both;
-      }
-
-      @media (max-width: 860px) {
-        .hero {
-          grid-template-columns: 1fr;
-        }
-
-        .hero-meta {
-          justify-self: stretch;
-        }
-
-        .topbar {
-          align-items: flex-start;
-          gap: 0.8rem;
-          flex-direction: column;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="grain"></div>
-
-    <div class="container">
-      <header class="topbar">
-        <div class="brand-wrap">
-         
-          <div>
-            <div class="brand">MAREECOMP</div>
-            <small class="subtitle">Laptop second area Depok</small>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Katalog Penjualan & Jasa | MAREECOMP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f7fb; 
+      --panel: #ffffff; 
+      --ink: #1e293b; 
+      --ink-light: #475569;
+      --line: #e2e8f0;
+      
+      --primary: #205f9a; /* Disesuaikan dengan warna biru di logomu */
+      --primary-hover: #194a7a;
+      --primary-soft: #eff6ff; 
+      
+      --accent: #f59e0b;
+      --danger: #ef4444;
+      
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 10px 25px -3px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 20px 40px -5px rgba(32, 95, 154, 0.15);
+      
+      --radius-lg: 24px; 
+      --radius-md: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; color: var(--ink); font-family: "Plus Jakarta Sans", sans-serif;
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, hsla(217,100%,94%,1) 0, transparent 50%), 
+        radial-gradient(at 100% 0%, hsla(210,100%,95%,1) 0, transparent 50%);
+      background-attachment: fixed;
+    }
+    
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 1.2rem; }
+    
+    /* Topbar & Logo */
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; flex-wrap: wrap; gap: 1rem;}
+    .brand-wrap { display: flex; align-items: center; gap: 0.8rem; }
+    
+    .logo-icon { 
+      width: 55px; height: 55px; 
+      display: flex; align-items: center; justify-content: center; 
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      /* Jika kamu tetap ingin memakai gambar .jpg mu, 
+         hapus kode SVG di bawah dan gunakan kode ini di HTML:
+         <img src="nama-file-logomu.jpg" style="width:100%; border-radius:50%;"> 
+      */
+    }
+    
+    .brand { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 1.5rem; color: var(--primary); line-height: 1; letter-spacing: -0.5px;}
+    .subtitle { display: block; font-size: 0.75rem; color: var(--ink-light); font-weight: 700; margin-top: 0.3rem; letter-spacing: 1px;}
+    
+    /* Buttons */
+    .btn { 
+      text-decoration: none; border: none; padding: 0.7rem 1.4rem; 
+      border-radius: 999px; font-weight: 600; cursor: pointer; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.9rem; text-align: center;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(32, 95, 154, 0.25); }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(32, 95, 154, 0.4); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #dc2626; transform: translateY(-2px); }
+    .btn-warning { background: var(--accent); color: white; }
+    .btn-warning:hover { background: #d97706; transform: translateY(-2px); }
+    .btn-outline { background: white; border: 2px solid var(--line); color: var(--ink); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    
+    /* Hero Section */
+    .hero { 
+      background: white; border-radius: var(--radius-lg); 
+      padding: clamp(2rem, 5vw, 4rem); margin-bottom: 2rem; 
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem; box-shadow: var(--shadow-md); overflow: hidden;
+      position: relative;
+    }
+    .hero-content { flex: 1; max-width: 550px; z-index: 2; }
+    .hero-badge { 
+      display: inline-block; background: var(--primary-soft); color: var(--primary);
+      padding: 0.4rem 1rem; border-radius: 999px; font-weight: 700; font-size: 0.85rem;
+      margin-bottom: 1rem; letter-spacing: 0.5px;
+    }
+    .hero h1 { 
+      font-family: "Bricolage Grotesque", sans-serif; margin: 0 0 15px 0; 
+      font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.15; color: var(--ink);
+    }
+    .hero p { color: var(--ink-light); margin: 0 0 20px 0; font-size: 1.05rem; line-height: 1.6;}
+    
+    .hero-illustration { 
+      flex: 1; display: flex; justify-content: center; align-items: center;
+      max-width: 400px; z-index: 2;
+    }
+    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+    .hero-illustration svg { width: 100%; height: auto; animation: float 6s ease-in-out infinite; drop-shadow: 0 20px 30px rgba(32, 95, 154, 0.2); }
+
+    /* Section Headers & Filters */
+    .section-head { margin: 2rem 0 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+    .section-head h2 { font-family: "Bricolage Grotesque", sans-serif; margin: 0; font-size: 1.8rem;}
+    .filters { display: flex; gap: 0.5rem; flex-wrap: wrap; background: white; padding: 0.4rem; border-radius: 999px; box-shadow: var(--shadow-sm); border: 1px solid var(--line);}
+    .chip { 
+      background: transparent; border: none; color: var(--ink-light); 
+      padding: 0.6rem 1.4rem; border-radius: 999px; font-weight: 600; 
+      cursor: pointer; transition: all 0.2s ease; font-size: 0.95rem; font-family: inherit;
+    }
+    .chip:hover { color: var(--ink); background: var(--bg); }
+    .chip.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(32, 95, 154, 0.3); }
+    
+    /* Catalog Grid */
+    .catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; padding-bottom: 2rem; }
+    
+    .card { 
+      background: var(--panel); border: 1px solid var(--line); 
+      border-radius: var(--radius-md); padding: 1.5rem; 
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: all 0.3s ease; box-shadow: var(--shadow-sm);
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); border-color: #bfdbfe; }
+    
+    .badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 8px; padding: 0.3rem 0.8rem; font-size: 0.75rem; font-weight: 700; margin-bottom: 12px; letter-spacing: 0.5px; }
+    .badge.penjualan { background: #dbeafe; color: #1e40af; } 
+    .badge.jasa { background: #fef3c7; color: #b45309; } 
+    
+    .title { margin: 0 0 0.4rem; font-family: "Bricolage Grotesque", sans-serif; font-size: 1.3rem; line-height: 1.3;}
+    .spec, .desc { color: var(--ink-light); font-size: 0.9rem; margin: 0 0 8px 0; line-height: 1.5;}
+    .price { margin: 15px 0; font-family: "Bricolage Grotesque", sans-serif; font-size: 1.5rem; color: var(--primary); font-weight: 800;}
+    
+    .card-action { display: flex; gap: 0.5rem; margin-top: 15px; flex-wrap: wrap; }
+    .card-action .btn { flex: 1; min-width: 80px; padding: 0.6rem; font-size: 0.85rem;} 
+    
+    /* Tips Section */
+    .tips-section { padding-bottom: 4rem; }
+    .scroll-container {
+      display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1.5rem;
+      scrollbar-width: thin; scrollbar-color: var(--primary) transparent;
+      padding-top: 10px;
+    }
+    .scroll-container::-webkit-scrollbar { height: 8px; }
+    .scroll-container::-webkit-scrollbar-track { background: transparent; }
+    .scroll-container::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
+    
+    .vertical-card {
+      border-radius: var(--radius-md);
+      flex: 0 0 auto; width: 220px; aspect-ratio: 9/16; padding: 1.5rem;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      position: relative; overflow: hidden; transition: 0.3s ease;
+      box-shadow: var(--shadow-md); text-decoration: none; color: white;
+    }
+    .vertical-card:hover { transform: translateY(-10px) rotate(1deg); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+    
+    .vc-1 { background: linear-gradient(145deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%); color: #6b21a8; }
+    .vc-2 { background: linear-gradient(145deg, #a18cd1 0%, #fbc2eb 100%); color: #1e1b4b; }
+    .vc-3 { background: linear-gradient(145deg, #84fab0 0%, #8fd3f4 100%); color: #064e3b; }
+    .vc-4 { background: linear-gradient(145deg, #fccb90 0%, #d57eeb 100%); color: #4c1d95; }
+    
+    .emoji-float { font-size: 3.5rem; position: absolute; top: 20px; right: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1)); }
+    .tip-badge { display: table; background: rgba(255,255,255,0.4); padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.75rem; font-weight: 800; margin-bottom: 10px; backdrop-filter: blur(4px); }
+    .tip-title { font-family: "Bricolage Grotesque"; font-size: 1.3rem; margin: 0 0 0.5rem 0; line-height: 1.2;}
+    .tip-desc { font-size: 0.85rem; margin: 0; line-height: 1.4; opacity: 0.9; font-weight: 500;}
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+      z-index: 100; display: none; justify-content: center; align-items: center; padding: 1rem;
+    }
+    .modal-box {
+      background: white; border-radius: var(--radius-lg); padding: 2.5rem; 
+      width: 100%; max-width: 480px; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    .modal-box h2 { margin-top: 0; font-family: "Bricolage Grotesque"; color: var(--ink); }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--ink-light); }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 0.9rem; border-radius: 12px; border: 2px solid var(--line);
+      background: #f8fafc; color: var(--ink); font-family: inherit; transition: 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--primary); background: white;
+    }
+    .close-btn { 
+      position: absolute; top: 20px; right: 25px; background: #f1f5f9; 
+      border: none; color: var(--ink-light); font-size: 1.2rem; width: 35px; height: 35px;
+      border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .close-btn:hover { background: #e2e8f0; color: var(--ink); }
+    
+    .admin-only { display: none; }
+
+    @media (max-width: 768px) {
+      .hero { flex-direction: column-reverse; text-align: center; padding: 2rem 1.5rem; }
+      .hero-illustration { max-width: 250px; }
+      .filters { width: 100%; justify-content: space-between; }
+      .chip { flex: 1; text-align: center; padding: 0.6rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="topbar">
+      <div class="brand-wrap">
+        
+        <!-- INI ADALAH LOGO SVG MAREECOMP -->
+        <div class="logo-icon">
+          <svg viewBox="0 0 100 100" width="100%" height="100%">
+            <!-- Background Lingkaran Krem -->
+            <circle cx="50" cy="50" r="50" fill="#f4f2eb" />
+            <!-- Layar Laptop -->
+            <rect x="23" y="28" width="54" height="36" rx="3" fill="#205f9a" />
+            <rect x="27" y="32" width="46" height="28" fill="#f4f2eb" />
+            <!-- Sinyal WiFi -->
+            <path d="M 38 42 A 16 16 0 0 1 62 42" stroke="#205f9a" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M 44 49 A 8 8 0 0 1 56 49" stroke="#205f9a" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <circle cx="50" cy="56" r="2.5" fill="#205f9a" />
+            <!-- Body Bawah Laptop -->
+            <path d="M 20 66 L 80 66 Q 84 66 84 70 L 84 71 Q 84 74 80 74 L 20 74 Q 16 74 16 71 L 16 70 Q 16 66 20 66 Z" fill="#205f9a" />
+            <!-- Touchpad (garis putih) -->
+            <rect x="42" y="68" width="16" height="2.5" rx="1" fill="#f4f2eb" />
+          </svg>
         </div>
-        <a class="cta" href="https://wa.me/6289654136885">Konsultasi WhatsApp</a>
-      </header>
 
-      <section class="hero">
         <div>
-          <h1>Katalog Penjualan dan Jasa dalam satu halaman.</h1>
-          <p>
-            Best seller yang tersedia saat ini adalah Lenovo X280 dan X390. Laptop baru juga ready — silakan tanyakan ketersediaan unit via WhatsApp.
-          </p>
+          <div class="brand">MAREECOMP</div>
+          <small class="subtitle">LAPTOP • REPAIR • UPGRADE</small>
         </div>
-        <div class="hero-meta">
-          <div class="meta-box">
-            <div class="meta-label">Update katalog</div>
-            <div class="meta-value">16 April 2026</div>
-          </div>
-          <div class="meta-box">
-            <div class="meta-label">Harga laptop</div>
-            <div class="meta-value">Mulai Rp2.500.000</div>
-          </div>
-        </div>
-      </section>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="btn btn-outline" id="btnLogin" onclick="openLoginModal()">⚙️ Admin</button>
+        <button class="btn btn-outline" id="btnLogout" onclick="logoutAdmin()" style="display:none;">🔒 Logout</button>
+        <button class="btn btn-primary admin-only" onclick="openAdminModalForAdd()">+ Tambah Item</button>
+      </div>
+    </header>
 
-      <section>
-        <div class="section-head">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <span class="hero-badge">👋 Halo! Selamat Datang di Mareecomp</span>
+        <h1>Pusat Jual & Rawat Laptop Terpercaya.</h1>
+        <p>Temukan laptop best seller seperti Lenovo X280 & X390, atau percayakan servis dan upgrade perangkatmu kepada teknisi handal kami.</p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="#katalog" class="btn btn-primary">Lihat Katalog ↓</a>
+          <a href="https://wa.me/6289654136885" class="btn btn-outline">Konsultasi WA 💬</a>
+        </div>
+      </div>
+      <div class="hero-illustration">
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="250" cy="250" r="220" fill="#eff6ff" />
+          <circle cx="250" cy="250" r="180" fill="#dbeafe" />
+          <rect x="120" y="280" width="260" height="20" rx="10" fill="#cbd5e1" />
+          <path d="M100 300 h300 v15 a10 10 0 0 1 -10 10 h-280 a10 10 0 0 1 -10 -10 v-15" fill="#94a3b8" />
+          <rect x="140" y="160" width="220" height="130" rx="8" fill="#1e293b" />
+          <rect x="150" y="170" width="200" height="105" rx="4" fill="#205f9a" />
+          <circle cx="210" cy="220" r="12" fill="white" />
+          <circle cx="290" cy="220" r="12" fill="white" />
+          <path d="M230 240 q20 20 40 0" stroke="white" stroke-width="6" stroke-linecap="round" fill="none" />
+          <g fill="#f59e0b">
+            <path d="M80 180 l30 -30 a20 20 0 0 1 20 10 l-40 40 a20 20 0 0 1 -10 -20 z" />
+            <rect x="65" y="195" width="40" height="15" rx="5" transform="rotate(45 85 205)" />
+          </g>
+          <path d="M380 140 l10 -30 l10 30 l30 10 l-30 10 l-10 30 l-10 -30 l-30 -10 z" fill="#fcd34d" />
+          <path d="M120 100 l5 -15 l5 15 l15 5 l-15 5 l-5 15 l-5 -15 l-15 -5 z" fill="#fbbf24" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- Katalog Section -->
+    <section id="katalog">
+      <div class="section-head">
+        <div>
+          <h2>Katalog Pilihan</h2>
+          <p style="color: var(--ink-light); margin: 5px 0 0; font-size: 0.95rem;">Produk & jasa dengan harga terbaik untukmu.</p>
+        </div>
+        <div class="filters">
+          <button class="chip active" data-filter="semua">Semua</button>
+          <button class="chip" data-filter="penjualan">📦 Penjualan</button>
+          <button class="chip" data-filter="jasa">🔧 Jasa Servis</button>
+        </div>
+      </div>
+      <div id="catalog" class="catalog"></div>
+    </section>
+
+    <!-- Tips & Tech News -->
+    <section class="tips-section">
+      <div class="section-head">
+        <div>
+          <h2>Tips & Info Tech 💡</h2>
+          <p style="color: var(--ink-light); font-size: 0.95rem; margin-top: 5px;">Panduan santai merawat perangkat kesayanganmu.</p>
+        </div>
+      </div>
+      <div class="scroll-container">
+        <div class="vertical-card vc-1">
+          <div class="emoji-float">🥶</div>
           <div>
-            <h2>Katalog MAREECOMP</h2>
-            <p>Fokus pada unit best seller, stok berubah mengikuti ketersediaan harian.</p>
-          </div>
-          <div class="filters" role="tablist" aria-label="Filter katalog">
-            <button class="chip active" data-filter="semua" role="tab" aria-selected="true">Semua</button>
-            <button class="chip" data-filter="penjualan" role="tab" aria-selected="false">Penjualan</button>
-            <button class="chip" data-filter="jasa" role="tab" aria-selected="false">Jasa</button>
+            <span class="tip-badge">Perawatan</span>
+            <h3 class="tip-title">Kapan Ganti Pasta?</h3>
+            <p class="tip-desc">Laptop mulai cepat panas & kipas berisik? Waktunya ganti thermal paste (ideal 1 tahun sekali).</p>
           </div>
         </div>
+        <div class="vertical-card vc-2">
+          <div class="emoji-float">🔋</div>
+          <div>
+            <span class="tip-badge">Tips Baterai</span>
+            <h3 class="tip-title">Biar Awet!</h3>
+            <p class="tip-desc">Jika sering dipakai sambil dicolok, gunakan fitur "Battery Conservation" agar tertahan di 80%.</p>
+          </div>
+        </div>
+        <div class="vertical-card vc-3">
+          <div class="emoji-float">🚀</div>
+          <div>
+            <span class="tip-badge">Upgrade Info</span>
+            <h3 class="tip-title">SSD itu Wajib</h3>
+            <p class="tip-desc">Masih pakai HDD biasa? Pindah ke SSD adalah jalan pintas termurah bikin laptop tua jadi ngebut.</p>
+          </div>
+        </div>
+        <div class="vertical-card vc-4">
+          <div class="emoji-float">🤖</div>
+          <div>
+            <span class="tip-badge">Tech News</span>
+            <h3 class="tip-title">Era AI Dimulai</h3>
+            <p class="tip-desc">Windows Copilot dan AI kini mulai masuk ke sistem operasi. Pastikan spek laptopmu cukup RAM!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 
-        <div id="catalog" class="catalog" aria-live="polite"></div>
-      </section>
+  <!-- MODALS -->
+  <div class="modal-overlay" id="loginOverlay">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeModals()">✕</button>
+      <h2>Masuk Admin 🔐</h2>
+      <p style="font-size: 0.9rem; color: var(--ink-light); margin-bottom: 1.5rem;">Masukkan PIN rahasia untuk mengelola katalog. (Default: 1234)</p>
+      <div class="form-group">
+        <input type="password" id="adminPin" placeholder="Ketik PIN di sini..." autocomplete="off">
+      </div>
+      <button class="btn btn-primary" style="width: 100%; padding: 1rem;" onclick="checkLogin()">Login Sekarang</button>
     </div>
+  </div>
 
-    <a class="quick-link floating-wa" href="https://wa.me/6289654136885">Chat Admin</a>
+  <div class="modal-overlay" id="adminOverlay">
+    <div class="modal-box" style="padding: 2rem;">
+      <button class="close-btn" onclick="closeModals()">✕</button>
+      <h2 id="modalTitle" style="margin-bottom: 1.5rem;">📝 Tambah Item</h2>
+      <form id="adminForm">
+        <input type="hidden" id="editItemId" value="">
+        <div class="form-group">
+          <label>Tipe Katalog</label>
+          <select id="itemType">
+            <option value="penjualan">📦 Penjualan</option>
+            <option value="jasa">🔧 Jasa</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nama Produk / Jasa</label>
+          <input type="text" id="itemTitle" required placeholder="Cont. Lenovo ThinkPad X280">
+        </div>
+        <div class="form-group">
+          <label>Spesifikasi Singkat</label>
+          <input type="text" id="itemSpec" required placeholder="Cont. Core i5, RAM 8GB, SSD 256GB">
+        </div>
+        <div class="form-group">
+          <label>Harga (Otomatis)</label>
+          <input type="text" id="itemPrice" required placeholder="Ketik angka saja, cth: 3500000">
+        </div>
+        <div class="form-group">
+          <label>Deskripsi Tambahan</label>
+          <textarea id="itemDesc" rows="2" required placeholder="Tulis keunggulan produk/jasa di sini..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem;">💾 Simpan Data</button>
+      </form>
+    </div>
+  </div>
 
-    <footer>MAREECOMP - Solusi laptop harian untuk kerja, sekolah, dan usaha.</footer>
+  <script>
+    const defaultItems = [
+      { id: 1, type: "penjualan", title: "Lenovo ThinkPad X280", spec: "Core i5 Gen 8, RAM 8GB, SSD 256GB", price: "Rp 3.300.000", desc: "Desain tipis, ringan, & tangguh. Cocok untuk kerja mobile dan nugas kuliah kampus." },
+      { id: 2, type: "jasa", title: "Install Ulang & Setup", spec: "Windows + Driver + MS Office", price: "Rp 150.000", desc: "Pembersihan total software lama yang lemot. Laptop kembali fresh siap tempur." },
+      { id: 3, type: "jasa", title: "Cleaning & Thermal Paste", spec: "Pembersihan Kipas & Ganti Pasta", price: "Rp 250.000", desc: "Solusi laptop overheat dan berisik. Menurunkan suhu signifikan agar tidak cepat rusak." }
+    ];
 
-    <script>
-      const items = [
-        {
-          type: "penjualan",
-          title: "Lenovo ThinkPad X280",
-          spec: "Core i5 Gen 8, RAM 8GB, SSD 256GB",
-          price: "Mulai Rp3.300.000",
-          desc: "Desain tipis dan ringan untuk kerja kantor dan kuliah.",
-          waText: "Halo, saya ingin cek stok Lenovo ThinkPad X280."
-        },
-        {
-          type: "penjualan",
-          title: "Lenovo ThinkPad X390",
-          spec: "Core i5 Gen 8, RAM 8GB, SSD 256GB",
-          price: "Mulai Rp4.200.000",
-          desc: "Layar 13 inci yang compact, cocok untuk kerja mobile.",
-          waText: "Halo, saya ingin cek stok Lenovo ThinkPad X390."
-        },
-        {
-          type: "jasa",
-          title: "Install Ulang + Setup",
-          spec: "Windows, driver, Office, browser, antivirus",
-          price: "Rp150.000",
-          desc: "Pembersihan software lama dan pemasangan ulang sampai siap digunakan.",
-          waText: "Halo, saya ingin booking jasa install ulang laptop."
-        },
-        {
-          type: "jasa",
-          title: "Cleaning + Ganti Thermal Paste",
-          spec: "Pembersihan fan, heatsink, dan jalur pendingin",
-          price: "Rp250.000",
-          desc: "Menurunkan suhu laptop agar tidak cepat panas saat dipakai lama.",
-          waText: "Halo, saya mau booking cleaning + thermal paste."
-        },
-        {
-          type: "jasa",
-          title: "Upgrade SSD / RAM",
-          spec: "Konsultasi komponen, pemasangan, tes stabilitas",
-          price: "Mulai Rp200.000",
-          desc: "Meningkatkan performa booting dan aplikasi sesuai kebutuhan pengguna.",
-          waText: "Halo, saya ingin konsultasi upgrade SSD/RAM."
-        }
-      ];
+    let items = JSON.parse(localStorage.getItem("mareecomp_data")) || defaultItems;
+    let isAdmin = localStorage.getItem("mareecomp_admin") === "true"; 
+    let activeFilter = "semua";
 
-      const catalog = document.getElementById("catalog");
-      const chips = document.querySelectorAll(".chip");
-
-      let activeFilter = "semua";
-      let isLoading = true;
-
-      function waLink(text) {
-        return `https://wa.me/6289654136885?text=${encodeURIComponent(text)}`;
+    const catalog = document.getElementById("catalog");
+    const chips = document.querySelectorAll(".chip");
+    
+    const priceInput = document.getElementById("itemPrice");
+    priceInput.addEventListener("input", function(e) {
+      let numericValue = this.value.replace(/[^0-9]/g, "");
+      if (numericValue) {
+        this.value = "Rp " + parseInt(numericValue, 10).toLocaleString('id-ID');
+      } else {
+        this.value = "";
       }
+    });
 
-      function renderSkeleton() {
-        catalog.innerHTML = "";
-        for (let i = 0; i < 6; i += 1) {
-          const block = document.createElement("div");
-          block.className = "skeleton";
-          catalog.appendChild(block);
-        }
-      }
+    function waLink(title) {
+      return `https://wa.me/6289654136885?text=${encodeURIComponent("Halo Min, saya tertarik dan ingin tanya ketersediaan untuk: " + title)}`;
+    }
 
-      function renderItems() {
-        catalog.innerHTML = "";
+    function renderItems() {
+      catalog.innerHTML = "";
+      const filtered = activeFilter === "semua" ? items : items.filter((i) => i.type === activeFilter);
 
-        const filtered = activeFilter === "semua" ? items : items.filter((item) => item.type === activeFilter);
+      filtered.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        
+        const badgeIcon = item.type === 'penjualan' ? '📦' : '🔧';
+        const adminButtonsHTML = isAdmin ? `
+          <button onclick="editItem(${item.id})" class="btn btn-warning">✏️ Edit</button>
+          <button onclick="deleteItem(${item.id})" class="btn btn-danger">🗑️ Hapus</button>
+        ` : '';
 
-        if (!filtered.length) {
-          const empty = document.createElement("article");
-          empty.className = "empty-state";
-          empty.innerHTML = `
-            <h3>Item belum tersedia</h3>
-            <p>Gunakan filter lain atau hubungi admin untuk permintaan spesifik.</p>
-          `;
-          catalog.appendChild(empty);
-          return;
-        }
-
-        filtered.forEach((item, idx) => {
-          const card = document.createElement("article");
-          card.className = "card";
-          card.style.animationDelay = `${idx * 60}ms`;
-          card.innerHTML = `
-            <div>
-              <span class="badge ${item.type}">${item.type.toUpperCase()}</span>
-              <h3 class="title">${item.title}</h3>
-              <p class="spec">${item.spec}</p>
-              <p class="price">${item.price}</p>
-              <p class="desc">${item.desc}</p>
-            </div>
-            <div class="card-action">
-              <a class="quick-link" href="${waLink(item.waText)}">Pesan Sekarang</a>
-            </div>
-          `;
-          catalog.appendChild(card);
-        });
-      }
-
-      chips.forEach((chip) => {
-        chip.addEventListener("click", () => {
-          activeFilter = chip.dataset.filter;
-          chips.forEach((btn) => {
-            const active = btn === chip;
-            btn.classList.toggle("active", active);
-            btn.setAttribute("aria-selected", active ? "true" : "false");
-          });
-          renderItems();
-        });
+        card.innerHTML = `
+          <div>
+            <span class="badge ${item.type}">${badgeIcon} ${item.type.toUpperCase()}</span>
+            <h3 class="title">${item.title}</h3>
+            <p class="spec">${item.spec}</p>
+            <p class="desc">${item.desc}</p>
+            <div class="price">${item.price}</div>
+          </div>
+          <div class="card-action">
+            <a class="btn btn-primary" style="flex:2;" href="${waLink(item.title)}">Pesan Via WA 💬</a>
+            ${adminButtonsHTML}
+          </div>
+        `;
+        catalog.appendChild(card);
       });
+    }
 
-      renderSkeleton();
-      setTimeout(() => {
-        isLoading = false;
-        if (!isLoading) renderItems();
-      }, 520);
-    </script>
-  </body>
+    function updateUI() {
+      const adminElements = document.querySelectorAll('.admin-only');
+      adminElements.forEach(el => el.style.display = isAdmin ? 'inline-flex' : 'none');
+      
+      document.getElementById('btnLogin').style.display = isAdmin ? 'none' : 'inline-flex';
+      document.getElementById('btnLogout').style.display = isAdmin ? 'inline-flex' : 'none';
+      
+      renderItems(); 
+    }
+
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        activeFilter = chip.dataset.filter;
+        chips.forEach((btn) => btn.classList.toggle("active", btn === chip));
+        renderItems();
+      });
+    });
+
+    function openLoginModal() { document.getElementById("loginOverlay").style.display = "flex"; }
+    
+    function openAdminModalForAdd() {
+      document.getElementById("adminForm").reset();
+      document.getElementById("editItemId").value = "";
+      document.getElementById("modalTitle").innerHTML = "📝 Tambah Item Baru";
+      document.getElementById("adminOverlay").style.display = "flex";
+    }
+
+    function editItem(id) {
+      const itemToEdit = items.find(item => item.id === id);
+      if(itemToEdit) {
+        document.getElementById("editItemId").value = itemToEdit.id;
+        document.getElementById("itemType").value = itemToEdit.type;
+        document.getElementById("itemTitle").value = itemToEdit.title;
+        document.getElementById("itemSpec").value = itemToEdit.spec;
+        document.getElementById("itemPrice").value = itemToEdit.price;
+        document.getElementById("itemDesc").value = itemToEdit.desc;
+
+        document.getElementById("modalTitle").innerHTML = "✏️ Edit Item";
+        document.getElementById("adminOverlay").style.display = "flex";
+      }
+    }
+    
+    function closeModals() {
+      document.getElementById("loginOverlay").style.display = "none";
+      document.getElementById("adminOverlay").style.display = "none";
+      document.getElementById("adminPin").value = "";
+      document.getElementById("adminForm").reset();
+      document.getElementById("editItemId").value = "";
+    }
+
+    function checkLogin() {
+      const pin = document.getElementById("adminPin").value;
+      if (pin === "1234") {
+        isAdmin = true;
+        localStorage.setItem("mareecomp_admin", "true");
+        closeModals();
+        updateUI();
+      } else {
+        alert("Ups, PIN Salah! Coba lagi.");
+      }
+    }
+
+    function logoutAdmin() {
+      isAdmin = false;
+      localStorage.setItem("mareecomp_admin", "false");
+      updateUI();
+    }
+
+    function saveData() {
+      localStorage.setItem("mareecomp_data", JSON.stringify(items));
+      renderItems();
+    }
+
+    document.getElementById("adminForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const editId = document.getElementById("editItemId").value;
+      const formData = {
+        type: document.getElementById("itemType").value,
+        title: document.getElementById("itemTitle").value,
+        spec: document.getElementById("itemSpec").value,
+        price: document.getElementById("itemPrice").value,
+        desc: document.getElementById("itemDesc").value,
+      };
+
+      if(editId) {
+        const index = items.findIndex(item => item.id == editId);
+        if(index !== -1) items[index] = { ...items[index], ...formData };
+      } else {
+        items.push({ id: Date.now(), ...formData });
+      }
+      saveData();
+      closeModals();
+    });
+
+    function deleteItem(id) {
+      if(confirm("Yakin ingin menghapus item ini dari katalog? Data tidak bisa dikembalikan loh.")) {
+        items = items.filter(item => item.id !== id);
+        saveData();
+      }
+    }
+
+    updateUI();
+  </script>
+</body>
 </html>
