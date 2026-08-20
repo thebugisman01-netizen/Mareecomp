@@ -364,7 +364,54 @@ document.getElementById("adminForm").addEventListener("submit", async function(e
   };
 
   try {
-    // Menggunakan URLSearchParams & mode no-cors agar lolos dari aturan CORS browser
+   // 1. DEKLARASI LINK APPS SCRIPT (Pastikan berada di luar fungsi)
+const appsScriptUrl = "https://script.google.com/macros/s/AKfycbzYQ11EzvykvoODXfteh2GQC3xR4rDwlJ5NYz2WNxMtfvpWNptD_TfsvRlx2dHWadBt/exec";
+
+// 2. FUNGSI MENGAMBIL DATA DARI DATABASE
+async function loadDataFromAppsScript() {
+  if (!appsScriptUrl || appsScriptUrl === "" || appsScriptUrl === "ISI_LINK_APPS_SCRIPT_DISINI") {
+    catalog.innerHTML = `<div class="loading-state text-red-500">⚠️ Error: Link Apps Script belum dimasukkan.</div>`;
+    return;
+  }
+
+  try {
+    catalog.innerHTML = `<div class="loading-state">⏳ Sedang memuat katalog...</div>`;
+    
+    const response = await fetch(appsScriptUrl);
+    const data = await response.json();
+    
+    // Simpan data (sesuaikan nama variabel global jika di kodenya menggunakan nama lain, misalnya window.items = data)
+    window.itemsData = data; 
+    
+    renderItems();
+  } catch (err) {
+    catalog.innerHTML = `<div class="loading-state">Toko belum memiliki barang atau koneksi database error.</div>`;
+  }
+}
+
+// 3. FUNGSI MENYIMPAN (TAMBAH/EDIT) KE DATABASE GOOGLE SHEETS
+document.getElementById("adminForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  
+  const btn = document.getElementById("btnSimpan");
+  btn.innerText = "⏳ Menyimpan ke Database...";
+  btn.disabled = true;
+
+  const editId = document.getElementById("editItemId").value;
+  const newId = editId ? editId : new Date().getTime().toString(); 
+  const actionType = editId ? "edit" : "add";
+
+  const payload = {
+    action: actionType,
+    id: newId,
+    type: document.getElementById("itemType").value,
+    title: document.getElementById("itemTitle").value,
+    spec: document.getElementById("itemSpec").value,
+    price: document.getElementById("itemPrice").value,
+    desc: document.getElementById("itemDesc").value
+  };
+
+  try {
     const formData = new URLSearchParams();
     formData.append("data", JSON.stringify(payload));
 
@@ -379,7 +426,7 @@ document.getElementById("adminForm").addEventListener("submit", async function(e
     
     alert("Data berhasil dikirim!");
     closeModals();
-    setTimeout(() => { loadDataFromAppsScript(); }, 1500); // Beri jeda 1.5 detik agar Google Sheets selesai memproses
+    setTimeout(() => { loadDataFromAppsScript(); }, 1500); 
   } catch (err) {
     alert("Gagal menyimpan data! Pastikan koneksi internet lancar.");
   } finally {
@@ -388,92 +435,33 @@ document.getElementById("adminForm").addEventListener("submit", async function(e
   }
 });
 
-    // FUNGSI HAPUS DARI DATABASE GOOGLE SHEETS
-    window.deleteItem = async function(id) {
-      if(confirm("Yakin ingin menghapus item ini dari database?")) {
-        // Tampilkan status sedang menghapus pada layar
-        catalog.innerHTML = `<div class="loading-state">⏳ Menghapus dari Database...</div>`;
-        
-        const payload = { action: "delete", id: id.toString() };
-        
-        try {
-          await fetch(appsScriptUrl, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(payload)
-          });
-          loadDataFromAppsScript();
-        } catch (err) {
-          alert("Gagal menghapus data.");
-          loadDataFromAppsScript();
-        }
-      }
-    }
-
-    window.toggleDesc = function(btn) {
-      const descEl = btn.previousElementSibling;
-      descEl.classList.toggle('line-clamp-2');
-      btn.innerText = descEl.classList.contains('line-clamp-2') ? 'Baca selengkapnya' : 'Sembunyikan';
-    };
-
-    function waLink(title) {
-      return `https://wa.me/6289654136885?text=${encodeURIComponent("Halo Min, saya tertarik dan ingin tanya ketersediaan untuk: " + title)}`;
-    }
-
-    function renderItems() {
-      catalog.innerHTML = "";
-      let filtered = items;
-      if (activeFilter !== "semua") filtered = filtered.filter(i => i.type === activeFilter);
-      if (searchQuery.trim() !== "") {
-        filtered = filtered.filter(i => i.title.toLowerCase().includes(searchQuery) || i.spec.toLowerCase().includes(searchQuery));
-      }
-
-      if (filtered.length === 0) {
-        catalog.innerHTML = `<div class="loading-state">Belum ada barang di Database. Silakan tambah item baru.</div>`;
-        return;
-      }
-
-      filtered.forEach((item) => {
-        const card = document.createElement("div");
-        card.className = "card";
-        
-        const badgeIcon = item.type === 'penjualan' ? '💻' : '🔧';
-        const bgClass = item.type === 'penjualan' ? 'bg-penjualan' : 'bg-jasa';
-
-        const adminButtonsHTML = isAdmin ? `
-          <button onclick="editItem('${item.id}')" class="btn btn-warning">✏️ Edit</button>
-          <button onclick="deleteItem('${item.id}')" class="btn btn-danger">🗑️</button>
-        ` : '';
-
-        const isLongText = item.desc.length > 70;
-        const descHTML = `
-          <div>
-            <p class="desc ${isLongText ? 'line-clamp-2' : ''}">${item.desc}</p>
-            ${isLongText ? `<button class="read-more-btn" onclick="toggleDesc(this)">Baca selengkapnya</button>` : ''}
-          </div>
-        `;
-
-        card.innerHTML = `
-          <div class="card-icon-wrap ${bgClass}">
-             <span class="icon-shadow">${badgeIcon}</span>
-          </div>
-          <div class="card-content">
-            <div>
-              <span class="badge ${item.type}">${badgeIcon} ${item.type.toUpperCase()}</span>
-              <h3 class="title">${item.title}</h3>
-              <p class="spec">${item.spec}</p>
-              ${descHTML}
-              <div class="price">${item.price}</div>
-            </div>
-            <div class="card-action">
-              <a class="btn btn-primary" style="flex: 2;" href="${waLink(item.title)}">Pesan Via WhatsApp 💬</a>
-              ${adminButtonsHTML}
-            </div>
-          </div>
-        `;
-        catalog.appendChild(card);
+// 4. FUNGSI HAPUS DARI DATABASE GOOGLE SHEETS
+window.deleteItem = async function(id) {
+  if(confirm("Yakin ingin menghapus item ini dari database?")) {
+    catalog.innerHTML = `<div class="loading-state">⏳ Menghapus dari Database...</div>`;
+    
+    const payload = { action: "delete", id: id.toString() };
+    
+    try {
+      await fetch(appsScriptUrl, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
       });
+      loadDataFromAppsScript();
+    } catch (err) {
+      alert("Gagal menghapus data.");
+      loadDataFromAppsScript();
     }
+  }
+}
+
+// 5. FUNGSI TOGGLE DESKRIPSI TAMPILAN
+window.toggleDesc = function(btn) {
+  const descEl = btn.previousElementSibling;
+  descEl.classList.toggle('line-clamp-2');
+  btn.innerText = descEl.classList.contains('line-clamp-2') ? 'Baca selengkapnya' : 'Sembunyikan';
+};
 
     // LOGIKA TAMPILAN ADMIN
     function updateUI() {
