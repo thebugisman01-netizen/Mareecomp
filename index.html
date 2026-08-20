@@ -291,238 +291,399 @@
   </div>
 
   <script>
-    // =========================================================================
-    // 👇 MASUKKAN LINK WEB APP (URL APPS SCRIPT) KAMU DI SINI 👇
-    // =========================================================================
-    const appsScriptUrl = "https://script.google.com/macros/s/AKfycbyiyCgUi_zG_43mAqvd4NE34dLY-GirOxYtJkXdM9TZJRn7DdMIfhd-5WIxNhsShpuH/exec"; 
-    
-    let items = [];
-    let isAdmin = localStorage.getItem("mareecomp_admin") === "true"; 
-    let activeFilter = "semua";
-    let searchQuery = "";
+  // =========================================================
+  // MAREECOMP - KATALOG
+  // =========================================================
 
-    const catalog = document.getElementById("catalog");
-    const chips = document.querySelectorAll(".chip");
-    const searchInput = document.getElementById("searchInput");
+  const appsScriptUrl = "https://script.google.com/macros/s/AKfycbyiyCgUi_zG_43mAqvd4NE34dLY-GirOxYtJkXdM9TZJRn7DdMIfhd-5WIxNhsShpuH/exec";
 
-    // Format Harga Otomatis
-    document.getElementById("itemPrice").addEventListener("input", function(e) {
-      let numericValue = this.value.replace(/[^0-9]/g, "");
-      this.value = numericValue ? "Rp " + parseInt(numericValue, 10).toLocaleString('id-ID') : "";
+  let items = [];
+  let isAdmin = localStorage.getItem("mareecomp_admin") === "true";
+  let activeFilter = "semua";
+  let searchQuery = "";
+
+  const catalog = document.getElementById("catalog");
+  const chips = document.querySelectorAll(".chip");
+  const searchInput = document.getElementById("searchInput");
+  const adminForm = document.getElementById("adminForm");
+
+  // ---------------------------------------------------------
+  // Utility
+  // ---------------------------------------------------------
+  function escapeHTML(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function normalizeItem(row) {
+    return {
+      id: String(row.id ?? row.ID ?? row.Id ?? ""),
+      type: String(row.tipe ?? row.type ?? "penjualan").toLowerCase().trim(),
+      title: String(row.judul ?? row.title ?? "Tanpa Nama"),
+      spec: String(row.spek ?? row.spec ?? "-"),
+      price: String(row.harga ?? row.price ?? "Rp 0"),
+      desc: String(row.deskripsi ?? row.desc ?? "")
+    };
+  }
+
+  // ---------------------------------------------------------
+  // Harga otomatis
+  // ---------------------------------------------------------
+  document.getElementById("itemPrice").addEventListener("input", function () {
+    const numericValue = this.value.replace(/[^0-9]/g, "");
+    this.value = numericValue
+      ? "Rp " + Number(numericValue).toLocaleString("id-ID")
+      : "";
+  });
+
+  // ---------------------------------------------------------
+  // Load data
+  // ---------------------------------------------------------
+  async function loadDataFromAppsScript() {
+    catalog.innerHTML = `
+      <div class="loading-state">⏳ Menarik data dari Database...</div>
+    `;
+
+    try {
+      const response = await fetch(appsScriptUrl, {
+        method: "GET",
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        throw new Error("HTTP " + response.status);
+      }
+
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Respons Apps Script bukan array.");
+      }
+
+      items = data.map(normalizeItem);
+      renderItems();
+
+    } catch (error) {
+      console.error("LOAD ERROR:", error);
+
+      catalog.innerHTML = `
+        <div class="loading-state" style="color:var(--danger)">
+          ⚠️ Gagal mengambil data dari Google Sheets.
+          <br>
+          <small>${escapeHTML(error.message)}</small>
+          <br><br>
+          <button class="btn btn-primary" onclick="loadDataFromAppsScript()">
+            🔄 Coba Lagi
+          </button>
+        </div>
+      `;
+    }
+  }
+
+  // ---------------------------------------------------------
+  // Render katalog
+  // ---------------------------------------------------------
+  function renderItems() {
+    catalog.innerHTML = "";
+
+    const filteredItems = items.filter(item => {
+      const matchesFilter =
+        activeFilter === "semua" || item.type === activeFilter;
+
+      const searchText = (
+        item.title + " " +
+        item.spec + " " +
+        item.desc
+      ).toLowerCase();
+
+      return matchesFilter && searchText.includes(searchQuery);
     });
 
-    // FUNGSI MEMBACA DATA DARI DATABASE GOOGLE SHEETS
-    async function loadDataFromAppsScript() {
-      if(appsScriptUrl === "https://script.google.com/macros/s/AKfycbyiyCgUi_zG_43mAqvd4NE34dLY-GirOxYtJkXdM9TZJRn7DdMIfhd-5WIxNhsShpuH/exec") {
-         catalog.innerHTML = `<div class="loading-state" style="color:var(--danger)">⚠️ Error: Link Apps Script belum dimasukkan.</div>`;
-         return;
-      }
-
-      catalog.innerHTML = `<div class="loading-state">Menarik data dari Database... 🔄</div>`;
-      
-      try {
-        const response = await fetch(appsScriptUrl);
-        const data = await response.json();
-        
-        items = data.map(row => {
-          return {
-            id: row.id,
-            type: (row.tipe || "penjualan").toLowerCase().trim(),
-            title: row.judul || "Tanpa Nama",
-            spec: row.spek || "-",
-            price: row.harga || "Rp 0",
-            desc: row.deskripsi || ""
-          }
-        });
-        
-        renderItems();
-      } catch (err) {
-        catalog.innerHTML = `<div class="loading-state">Toko belum memiliki barang atau koneksi database error.</div>`;
-      }
+    if (filteredItems.length === 0) {
+      catalog.innerHTML = `
+        <div class="loading-state">
+          ${items.length === 0
+            ? "📦 Belum ada data katalog."
+            : "🔎 Tidak ada produk atau jasa yang cocok."}
+        </div>
+      `;
+      return;
     }
 
-  // FUNGSI MENYIMPAN (TAMBAH/EDIT) KE DATABASE GOOGLE SHEETS
-document.getElementById("adminForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
-  
-  const btn = document.getElementById("btnSimpan");
-  btn.innerText = "⏳ Menyimpan ke Database...";
-  btn.disabled = true;
+    filteredItems.forEach(item => {
+      const isPenjualan = item.type === "penjualan";
 
-  const editId = document.getElementById("editItemId").value;
-  const newId = editId ? editId : new Date().getTime().toString(); 
-  const actionType = editId ? "edit" : "add";
+      const card = document.createElement("div");
+      card.className = "card";
 
-  const payload = {
-    action: actionType,
-    id: newId,
-    type: document.getElementById("itemType").value,
-    title: document.getElementById("itemTitle").value,
-    spec: document.getElementById("itemSpec").value,
-    price: document.getElementById("itemPrice").value,
-    desc: document.getElementById("itemDesc").value
-  };
+      const adminButtons = isAdmin ? `
+        <button class="btn btn-warning"
+          onclick="editItem(${JSON.stringify(String(item.id))})">
+          ✏️ Edit
+        </button>
+        <button class="btn btn-danger"
+          onclick="deleteItem(${JSON.stringify(String(item.id))})">
+          🗑️ Hapus
+        </button>
+      ` : "";
 
-  try {
-   // 1. DEKLARASI LINK APPS SCRIPT (Pastikan berada di luar fungsi)
-const appsScriptUrl = "https://script.google.com/macros/s/AKfycbyiyCgUi_zG_43mAqvd4NE34dLY-GirOxYtJkXdM9TZJRn7DdMIfhd-5WIxNhsShpuH/exec";
+      const readMore = item.desc.length > 120 ? `
+        <button class="read-more-btn" onclick="toggleDesc(this)">
+          Baca selengkapnya
+        </button>
+      ` : "";
 
-// 2. FUNGSI MENGAMBIL DATA DARI DATABASE
-async function loadDataFromAppsScript() {
-  if (!appsScriptUrl || appsScriptUrl === "" || appsScriptUrl === "ISI_LINK_APPS_SCRIPT_DISINI") {
-    catalog.innerHTML = `<div class="loading-state text-red-500">⚠️ Error: Link Apps Script belum dimasukkan.</div>`;
-    return;
-  }
+      const waText = encodeURIComponent(
+        "Halo MAREECOMP, saya tertarik dengan " +
+        item.title +
+        ". Apakah masih tersedia?"
+      );
 
-  try {
-    catalog.innerHTML = `<div class="loading-state">⏳ Sedang memuat katalog...</div>`;
-    
-    const response = await fetch(appsScriptUrl);
-    const data = await response.json();
-    
-    // Simpan data (sesuaikan nama variabel global jika di kodenya menggunakan nama lain, misalnya window.items = data)
-    window.itemsData = data; 
-    
-    renderItems();
-  } catch (err) {
-    catalog.innerHTML = `<div class="loading-state">Toko belum memiliki barang atau koneksi database error.</div>`;
-  }
-}
+      card.innerHTML = `
+        <div class="card-icon-wrap ${isPenjualan ? "bg-penjualan" : "bg-jasa"}">
+          <div class="icon-shadow">${isPenjualan ? "💻" : "🔧"}</div>
+        </div>
 
-// 3. FUNGSI MENYIMPAN (TAMBAH/EDIT) KE DATABASE GOOGLE SHEETS
-document.getElementById("adminForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
-  
-  const btn = document.getElementById("btnSimpan");
-  btn.innerText = "⏳ Menyimpan ke Database...";
-  btn.disabled = true;
+        <div class="card-content">
+          <div>
+            <span class="badge ${isPenjualan ? "penjualan" : "jasa"}">
+              ${isPenjualan ? "💻 Penjualan" : "🔧 Jasa"}
+            </span>
 
-  const editId = document.getElementById("editItemId").value;
-  const newId = editId ? editId : new Date().getTime().toString(); 
-  const actionType = editId ? "edit" : "add";
+            <h3 class="title">${escapeHTML(item.title)}</h3>
 
-  const payload = {
-    action: actionType,
-    id: newId,
-    type: document.getElementById("itemType").value,
-    title: document.getElementById("itemTitle").value,
-    spec: document.getElementById("itemSpec").value,
-    price: document.getElementById("itemPrice").value,
-    desc: document.getElementById("itemDesc").value
-  };
+            <p class="spec">${escapeHTML(item.spec)}</p>
 
-  try {
-    const formData = new URLSearchParams();
-    formData.append("data", JSON.stringify(payload));
+            <p class="desc line-clamp-2">${escapeHTML(item.desc)}</p>
 
-    await fetch(appsScriptUrl, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: formData.toString()
+            ${readMore}
+          </div>
+
+          <div>
+            <div class="price">${escapeHTML(item.price)}</div>
+
+            <div class="card-action">
+              <a
+                href="https://wa.me/6289654136885?text=${waText}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary">
+                💬 Tanya
+              </a>
+
+              ${adminButtons}
+            </div>
+          </div>
+        </div>
+      `;
+
+      catalog.appendChild(card);
     });
-    
-    alert("Data berhasil dikirim!");
-    closeModals();
-    setTimeout(() => { loadDataFromAppsScript(); }, 1500); 
-  } catch (err) {
-    alert("Gagal menyimpan data! Pastikan koneksi internet lancar.");
-  } finally {
-    btn.innerText = "💾 Simpan Katalog";
-    btn.disabled = false;
   }
-});
 
-// 4. FUNGSI HAPUS DARI DATABASE GOOGLE SHEETS
-window.deleteItem = async function(id) {
-  if(confirm("Yakin ingin menghapus item ini dari database?")) {
-    catalog.innerHTML = `<div class="loading-state">⏳ Menghapus dari Database...</div>`;
-    
-    const payload = { action: "delete", id: id.toString() };
-    
+  // ---------------------------------------------------------
+  // Toggle deskripsi
+  // ---------------------------------------------------------
+  window.toggleDesc = function(btn) {
+    const descEl = btn.previousElementSibling;
+    if (!descEl) return;
+
+    descEl.classList.toggle("line-clamp-2");
+    btn.innerText = descEl.classList.contains("line-clamp-2")
+      ? "Baca selengkapnya"
+      : "Sembunyikan";
+  };
+
+  // ---------------------------------------------------------
+  // Tambah / Edit
+  // ---------------------------------------------------------
+  adminForm.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById("btnSimpan");
+    const editId = document.getElementById("editItemId").value.trim();
+
+    const payload = {
+      action: editId ? "edit" : "add",
+      id: editId || Date.now().toString(),
+      type: document.getElementById("itemType").value,
+      title: document.getElementById("itemTitle").value.trim(),
+      spec: document.getElementById("itemSpec").value.trim(),
+      price: document.getElementById("itemPrice").value.trim(),
+      desc: document.getElementById("itemDesc").value.trim()
+    };
+
+    btn.disabled = true;
+    btn.innerText = "⏳ Menyimpan...";
+
+    try {
+      const formData = new URLSearchParams();
+      formData.append("data", JSON.stringify(payload));
+
+      await fetch(appsScriptUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+        },
+        body: formData.toString()
+      });
+
+      alert(editId ? "Data berhasil diperbarui!" : "Data berhasil ditambahkan!");
+      closeModals();
+
+      setTimeout(loadDataFromAppsScript, 1200);
+
+    } catch (error) {
+      console.error("SAVE ERROR:", error);
+      alert("Gagal menyimpan data. Periksa koneksi dan Apps Script.");
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "💾 Simpan Katalog";
+    }
+  });
+
+  // ---------------------------------------------------------
+  // Hapus
+  // ---------------------------------------------------------
+  window.deleteItem = async function(id) {
+    if (!confirm("Yakin ingin menghapus item ini dari database?")) return;
+
     try {
       await fetch(appsScriptUrl, {
         method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({
+          action: "delete",
+          id: String(id)
+        })
       });
-      loadDataFromAppsScript();
-    } catch (err) {
+
+      alert("Permintaan hapus berhasil dikirim.");
+      setTimeout(loadDataFromAppsScript, 1000);
+
+    } catch (error) {
+      console.error("DELETE ERROR:", error);
       alert("Gagal menghapus data.");
       loadDataFromAppsScript();
     }
+  };
+
+  // ---------------------------------------------------------
+  // Admin UI
+  // ---------------------------------------------------------
+  function updateUI() {
+    document.querySelectorAll(".admin-only").forEach(el => {
+      el.style.display = isAdmin ? "inline-flex" : "none";
+    });
+
+    document.getElementById("btnLogin").style.display =
+      isAdmin ? "none" : "inline-flex";
+
+    document.getElementById("btnLogout").style.display =
+      isAdmin ? "inline-flex" : "none";
+
+    renderItems();
   }
-}
 
-// 5. FUNGSI TOGGLE DESKRIPSI TAMPILAN
-window.toggleDesc = function(btn) {
-  const descEl = btn.previousElementSibling;
-  descEl.classList.toggle('line-clamp-2');
-  btn.innerText = descEl.classList.contains('line-clamp-2') ? 'Baca selengkapnya' : 'Sembunyikan';
-};
+  window.openLoginModal = function() {
+    document.getElementById("loginOverlay").style.display = "flex";
+    setTimeout(() => document.getElementById("adminPin").focus(), 50);
+  };
 
-    // LOGIKA TAMPILAN ADMIN
-    function updateUI() {
-      const adminElements = document.querySelectorAll('.admin-only');
-      adminElements.forEach(el => el.style.display = isAdmin ? 'inline-flex' : 'none');
-      document.getElementById('btnLogin').style.display = isAdmin ? 'none' : 'inline-flex';
-      document.getElementById('btnLogout').style.display = isAdmin ? 'inline-flex' : 'none';
-      if(items.length > 0) renderItems(); 
+  window.openAdminModalForAdd = function() {
+    adminForm.reset();
+    document.getElementById("editItemId").value = "";
+    document.getElementById("modalTitle").innerHTML = "📝 Tambah Item Baru";
+    document.getElementById("adminOverlay").style.display = "flex";
+  };
+
+  window.editItem = function(id) {
+    const item = items.find(x => String(x.id) === String(id));
+
+    if (!item) {
+      alert("Data item tidak ditemukan.");
+      return;
     }
 
-    function openLoginModal() { document.getElementById("loginOverlay").style.display = "flex"; }
-    
-    function openAdminModalForAdd() {
-      document.getElementById("adminForm").reset();
-      document.getElementById("editItemId").value = "";
-      document.getElementById("modalTitle").innerHTML = "📝 Tambah Item Baru";
-      document.getElementById("adminOverlay").style.display = "flex";
-    }
+    document.getElementById("editItemId").value = item.id;
+    document.getElementById("itemType").value = item.type;
+    document.getElementById("itemTitle").value = item.title;
+    document.getElementById("itemSpec").value = item.spec;
+    document.getElementById("itemPrice").value = item.price;
+    document.getElementById("itemDesc").value = item.desc;
+    document.getElementById("modalTitle").innerHTML = "✏️ Edit Item";
+    document.getElementById("adminOverlay").style.display = "flex";
+  };
 
-    window.editItem = function(id) {
-      const itemToEdit = items.find(item => item.id == id);
-      if(itemToEdit) {
-        document.getElementById("editItemId").value = itemToEdit.id;
-        document.getElementById("itemType").value = itemToEdit.type;
-        document.getElementById("itemTitle").value = itemToEdit.title;
-        document.getElementById("itemSpec").value = itemToEdit.spec;
-        document.getElementById("itemPrice").value = itemToEdit.price;
-        document.getElementById("itemDesc").value = itemToEdit.desc;
-        
-        document.getElementById("modalTitle").innerHTML = "✏️ Edit Item";
-        document.getElementById("adminOverlay").style.display = "flex";
-      }
-    }
-    
-    function closeModals() {
-      document.getElementById("loginOverlay").style.display = "none";
-      document.getElementById("adminOverlay").style.display = "none";
-      document.getElementById("adminPin").value = "";
-    }
+  window.closeModals = function() {
+    document.getElementById("loginOverlay").style.display = "none";
+    document.getElementById("adminOverlay").style.display = "none";
+    document.getElementById("adminPin").value = "";
+  };
 
-    function checkLogin() {
-      if (document.getElementById("adminPin").value === "1234") {
-        isAdmin = true;
-        localStorage.setItem("mareecomp_admin", "true");
-        closeModals();
-        updateUI();
-      } else { alert("PIN Salah!"); }
-    }
+  window.checkLogin = function() {
+    const pin = document.getElementById("adminPin").value;
 
-    function logoutAdmin() {
-      isAdmin = false;
-      localStorage.setItem("mareecomp_admin", "false");
+    if (pin === "1234") {
+      isAdmin = true;
+      localStorage.setItem("mareecomp_admin", "true");
+      closeModals();
       updateUI();
+    } else {
+      alert("PIN Salah!");
     }
+  };
 
-    searchInput.addEventListener("input", (e) => { searchQuery = e.target.value.toLowerCase(); renderItems(); });
-    chips.forEach((chip) => { chip.addEventListener("click", () => { activeFilter = chip.dataset.filter; chips.forEach((btn) => btn.classList.toggle("active", btn === chip)); renderItems(); }); });
-
-    // JALANKAN SAAT WEBSITE DIBUKA
+  window.logoutAdmin = function() {
+    isAdmin = false;
+    localStorage.setItem("mareecomp_admin", "false");
     updateUI();
-    loadDataFromAppsScript();
-  </script>
+  };
+
+  // ---------------------------------------------------------
+  // Search & filter
+  // ---------------------------------------------------------
+  searchInput.addEventListener("input", function(e) {
+    searchQuery = e.target.value.toLowerCase().trim();
+    renderItems();
+  });
+
+  chips.forEach(chip => {
+    chip.addEventListener("click", function() {
+      activeFilter = chip.dataset.filter;
+
+      chips.forEach(btn => {
+        btn.classList.toggle("active", btn === chip);
+      });
+
+      renderItems();
+    });
+  });
+
+  // ---------------------------------------------------------
+  // Tutup modal klik di luar
+  // ---------------------------------------------------------
+  document.getElementById("loginOverlay").addEventListener("click", function(e) {
+    if (e.target === this) closeModals();
+  });
+
+  document.getElementById("adminOverlay").addEventListener("click", function(e) {
+    if (e.target === this) closeModals();
+  });
+
+  // ---------------------------------------------------------
+  // Jalankan
+  // ---------------------------------------------------------
+  updateUI();
+  loadDataFromAppsScript();
+</script>
 </body>
 </html>
