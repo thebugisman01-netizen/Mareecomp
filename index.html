@@ -294,7 +294,7 @@
     // =========================================================================
     // 👇 MASUKKAN LINK WEB APP (URL APPS SCRIPT) KAMU DI SINI 👇
     // =========================================================================
-    const appsScriptUrl = "https://script.google.com/macros/s/AKfycbzYQ11EzvykvoODXfteh2GQC3xR4rDwlJ5NYz2WNxMtfvpWNptD_TfsvRlx2dHWadBt/exec"; 
+    const appsScriptUrl = "https://script.google.com/macros/s/AKfycbyiyCgUi_zG_43mAqvd4NE34dLY-GirOxYtJkXdM9TZJRn7DdMIfhd-5WIxNhsShpuH/exec"; 
     
     let items = [];
     let isAdmin = localStorage.getItem("mareecomp_admin") === "true"; 
@@ -313,7 +313,7 @@
 
     // FUNGSI MEMBACA DATA DARI DATABASE GOOGLE SHEETS
     async function loadDataFromAppsScript() {
-      if(appsScriptUrl === "https://script.google.com/macros/s/AKfycbzYQ11EzvykvoODXfteh2GQC3xR4rDwlJ5NYz2WNxMtfvpWNptD_TfsvRlx2dHWadBt/exec") {
+      if(appsScriptUrl === "https://script.google.com/macros/s/AKfycbyiyCgUi_zG_43mAqvd4NE34dLY-GirOxYtJkXdM9TZJRn7DdMIfhd-5WIxNhsShpuH/exec") {
          catalog.innerHTML = `<div class="loading-state" style="color:var(--danger)">⚠️ Error: Link Apps Script belum dimasukkan.</div>`;
          return;
       }
@@ -365,7 +365,7 @@ document.getElementById("adminForm").addEventListener("submit", async function(e
 
   try {
    // 1. DEKLARASI LINK APPS SCRIPT (Pastikan berada di luar fungsi)
-const appsScriptUrl = "https://script.google.com/macros/s/AKfycbzYQ11EzvykvoODXfteh2GQC3xR4rDwlJ5NYz2WNxMtfvpWNptD_TfsvRlx2dHWadBt/exec";
+const appsScriptUrl = "https://script.google.com/macros/s/AKfycbyiyCgUi_zG_43mAqvd4NE34dLY-GirOxYtJkXdM9TZJRn7DdMIfhd-5WIxNhsShpuH/exec";
 
 // 2. FUNGSI MENGAMBIL DATA DARI DATABASE
 async function loadDataFromAppsScript() {
