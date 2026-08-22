@@ -93,13 +93,15 @@
     .footer-col p { color: var(--ink-light); font-size: 0.95rem; line-height: 1.6; }
     
     .scroll-container { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1.5rem; padding-top: 10px; }
-    .vertical-card { border-radius: var(--radius-md); flex: 0 0 auto; width: 220px; aspect-ratio: 9/16; padding: 1.5rem; display: flex; flex-direction: column; justify-content: flex-end; position: relative; color: white;}
+    .vertical-card { border-radius: var(--radius-md); flex: 0 0 auto; width: 220px; aspect-ratio: 9/16; padding: 1.5rem; display: flex; flex-direction: column; justify-content: flex-end; position: relative; color: white; transition: 0.3s ease;}
+    .vertical-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md);}
     .vc-1 { background: linear-gradient(145deg, #FF9A9E 0%, #FECFEF 100%); color: #6b21a8; }
     .vc-2 { background: linear-gradient(145deg, #a18cd1 0%, #fbc2eb 100%); color: #1e1b4b; }
     .vc-3 { background: linear-gradient(145deg, #84fab0 0%, #8fd3f4 100%); color: #064e3b; }
-    .vc-4 { background: linear-gradient(145deg, #fccb90 0%, #d57eeb 100%); color: #4c1d95; }
+    .vc-realtime { background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%); color: white; border: 1px solid #334155; }
     .emoji-float { font-size: 3.5rem; position: absolute; top: 20px; right: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1)); }
     .tip-badge { display: table; background: rgba(255,255,255,0.4); padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.75rem; font-weight: 800; margin-bottom: 10px;}
+    .tip-badge.realtime-badge { background: rgba(59, 130, 246, 0.3); color: #93c5fd; border: 1px solid #3b82f6;}
     .tip-title { font-family: "Bricolage Grotesque"; font-size: 1.2rem; margin: 0 0 0.5rem 0;}
     .tip-desc { font-size: 0.85rem; margin: 0; line-height: 1.4; opacity: 0.9; font-weight: 500;}
 
@@ -202,10 +204,12 @@
         <h2>Tips & Info Tech Real-time 🌐</h2>
       </div>
       <div class="scroll-container" id="newsContainer">
+        <!-- 3 Kartu Permanen (Statis) -->
         <div class="vertical-card vc-1"><div class="emoji-float">🥶</div><div><span class="tip-badge">Perawatan</span><h3 class="tip-title">Ganti Pasta</h3><p class="tip-desc">Laptop cepat panas? Waktunya ganti thermal paste.</p></div></div>
         <div class="vertical-card vc-2"><div class="emoji-float">🔋</div><div><span class="tip-badge">Baterai</span><h3 class="tip-title">Biar Awet!</h3><p class="tip-desc">Gunakan fitur "Battery Conservation" agar tertahan 80%.</p></div></div>
         <div class="vertical-card vc-3"><div class="emoji-float">🚀</div><div><span class="tip-badge">Upgrade</span><h3 class="tip-title">Wajib SSD</h3><p class="tip-desc">Pindah ke SSD bikin laptop tua jadi super ngebut.</p></div></div>
-        <div class="vertical-card vc-4"><div class="emoji-float">🤖</div><div><span class="tip-badge">Tech News</span><h3 class="tip-title">Era AI Dimulai</h3><p class="tip-desc">Windows Copilot dan AI kini mulai masuk sistem operasi.</p></div></div>
+        
+        <!-- BERITA REAL TIME AKAN MUNCUL DI SINI SECARA OTOMATIS -->
       </div>
     </section>
   </div>
@@ -285,9 +289,27 @@
     </div>
   </div>
 
+  <!-- MODAL DETAIL PRODUK (POPUP BACA SELENGKAPNYA) -->
+  <div class="modal-overlay" id="detailOverlay">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeModals()">✕</button>
+      <span class="badge" id="detailBadge" style="margin-bottom: 10px;"></span>
+      <h2 id="detailTitle" style="margin-top: 5px; margin-bottom: 5px; font-size: 1.5rem;"></h2>
+      <p id="detailSpec" style="color: var(--ink-light); font-weight: 600; margin-top: 0; margin-bottom: 20px;"></p>
+      
+      <!-- Box Deskripsi yang bisa di-scroll jika kepanjangan -->
+      <div style="background: var(--bg); padding: 1rem; border-radius: 12px; margin-bottom: 20px; max-height: 35vh; overflow-y: auto;">
+        <p id="detailDesc" style="white-space: pre-line; color: var(--ink); font-size: 0.95rem; line-height: 1.6; margin: 0;"></p>
+      </div>
+      
+      <div id="detailPrice" class="price" style="font-size: 1.8rem; margin-bottom: 20px; text-align: center;"></div>
+      <a id="detailWaBtn" class="btn btn-primary" style="width: 100%; padding: 1rem;" href="#" target="_blank">Pesan Via WhatsApp 💬</a>
+    </div>
+  </div>
+
   <script>
   // =========================================================
-  // MAREECOMP - KATALOG (VERSI FINAL FOTO PENJUALAN SAJA)
+  // MAREECOMP - KATALOG DENGAN UPLOAD FOTO & BERITA REAL-TIME
   // =========================================================
 
   // PASTIKAN GANTI LINK INI DENGAN URL DEPLOYMENT BARU KAMU!
@@ -326,7 +348,6 @@
   }
 
   function normalizeItem(row) {
-    // Format otomatis menjadi Rupiah dengan titik
     let rawPrice = String(row.harga ?? row.price ?? "0");
     let cleanNumber = rawPrice.replace(/[^0-9]/g, "");
     let finalPrice = cleanNumber ? "Rp " + Number(cleanNumber).toLocaleString("id-ID") : "Rp 0";
@@ -338,7 +359,7 @@
       spec: String(row.spek ?? row.spec ?? "-"),
       price: finalPrice,
       desc: String(row.deskripsi ?? row.desc ?? ""),
-      image: String(row.image ?? "") // Mengambil data foto
+      image: String(row.image ?? "") 
     };
   }
 
@@ -389,10 +410,9 @@
         <button class="btn btn-danger" onclick="deleteItem('${item.id}')">🗑️ Hapus</button>
       ` : "";
 
-      const readMore = item.desc.length > 120 ? `<button class="read-more-btn" onclick="toggleDesc(this)">Baca selengkapnya</button>` : "";
+      const readMore = item.desc.length > 70 ? `<button class="read-more-btn" onclick="openDetailModal('${item.id}')">Lihat Spesifikasi Lengkap</button>` : "";
       const waText = encodeURIComponent("Halo MAREECOMP, saya tertarik dengan " + item.title + ". Apakah masih tersedia?");
 
-      // Menampilkan gambar HANYA jika tipenya penjualan dan ada data foto. Jika jasa, paksakan pakai ikon.
       const imageHTML = (isPenjualan && item.image && item.image.length > 50)
         ? `<img src="${item.image}" class="card-image" alt="Foto">`
         : `<div class="icon-shadow">${isPenjualan ? "💻" : "🔧"}</div>`;
@@ -422,11 +442,27 @@
     });
   }
 
-  window.toggleDesc = function(btn) {
-    const descEl = btn.previousElementSibling;
-    if (!descEl) return;
-    descEl.classList.toggle("line-clamp-2");
-    btn.innerText = descEl.classList.contains("line-clamp-2") ? "Baca selengkapnya" : "Sembunyikan";
+  // FUNGSI MEMBUKA MODAL DETAIL SPESIFIKASI
+  window.openDetailModal = function(id) {
+    const item = items.find(i => String(i.id) === String(id));
+    if(!item) return;
+
+    const isPenjualan = item.type === 'penjualan';
+    const badgeIcon = isPenjualan ? '💻' : '🔧';
+    const badgeEl = document.getElementById("detailBadge");
+    
+    badgeEl.className = `badge ${item.type}`;
+    badgeEl.innerHTML = `${badgeIcon} ${item.type.toUpperCase()}`;
+
+    document.getElementById("detailTitle").innerText = item.title;
+    document.getElementById("detailSpec").innerText = item.spec;
+    document.getElementById("detailDesc").innerText = item.desc;
+    document.getElementById("detailPrice").innerText = item.price;
+    
+    const waText = encodeURIComponent("Halo MAREECOMP, saya tertarik dengan " + item.title + ". Apakah masih tersedia?");
+    document.getElementById("detailWaBtn").href = `https://wa.me/6289654136885?text=${waText}`;
+
+    document.getElementById("detailOverlay").style.display = "flex";
   };
 
   // FUNGSI UPLOAD GAMBAR & SIMPAN
@@ -443,7 +479,6 @@
 
     let finalBase64Image = existingImage; 
 
-    // Proses upload jika yang dipilih adalah Penjualan dan ada file
     if (itemType === "penjualan" && fileInput.files.length > 0) {
       const file = fileInput.files[0];
       finalBase64Image = await new Promise((resolve) => {
@@ -465,7 +500,7 @@
         reader.readAsDataURL(file);
       });
     } else if (itemType === "jasa") {
-      finalBase64Image = ""; // Jika jasa, pastikan fotonya dikosongkan
+      finalBase64Image = ""; 
     }
 
     const payload = {
@@ -534,7 +569,7 @@
     document.getElementById("editItemId").value = "";
     document.getElementById("existingImage").value = "";
     document.getElementById("modalTitle").innerHTML = "📝 Tambah Item Baru";
-    document.getElementById("imageUploadGroup").style.display = "block"; // Munculkan foto (karena defaultnya penjualan)
+    document.getElementById("imageUploadGroup").style.display = "block"; 
     document.getElementById("adminOverlay").style.display = "flex";
   };
 
@@ -550,7 +585,6 @@
     document.getElementById("itemDesc").value = item.desc;
     document.getElementById("existingImage").value = item.image; 
     
-    // Sembunyikan atau munculkan form foto tergantung tipenya
     document.getElementById("imageUploadGroup").style.display = item.type === "jasa" ? "none" : "block";
     
     document.getElementById("modalTitle").innerHTML = "✏️ Edit Item";
@@ -560,12 +594,13 @@
   window.closeModals = function() {
     document.getElementById("loginOverlay").style.display = "none";
     document.getElementById("adminOverlay").style.display = "none";
+    document.getElementById("detailOverlay").style.display = "none";
     document.getElementById("adminPin").value = "";
   };
 
   window.checkLogin = function() {
     const pin = document.getElementById("adminPin").value;
-    if (pin === "1234") { // <--- GANTI PIN RAHASIA KAMU DI SINI
+    if (pin === "1234") { 
       isAdmin = true;
       localStorage.setItem("mareecomp_admin", "true");
       closeModals();
@@ -596,9 +631,47 @@
 
   document.getElementById("loginOverlay").addEventListener("click", function(e) { if (e.target === this) closeModals(); });
   document.getElementById("adminOverlay").addEventListener("click", function(e) { if (e.target === this) closeModals(); });
+  document.getElementById("detailOverlay").addEventListener("click", function(e) { if (e.target === this) closeModals(); });
 
+  // FUNGSI MENGAMBIL BERITA TEKNOLOGI REAL-TIME 
+  async function fetchRealtimeNews() {
+    const container = document.getElementById("newsContainer");
+    try {
+      // Menggunakan API RSS ke JSON untuk mengambil berita Teknologi terbaru
+      const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.cnnindonesia.com%2Fteknologi%2Frss');
+      const data = await res.json();
+      
+      if(data && data.items && data.items.length > 0) {
+        // Ambil 2 berita terbaru agar sejajar dengan 3 kartu statis
+        const latestNews = data.items.slice(0, 2);
+        
+        latestNews.forEach(news => {
+          const newsCard = document.createElement("a");
+          newsCard.href = news.link;
+          newsCard.target = "_blank";
+          newsCard.className = "vertical-card vc-realtime";
+          newsCard.style.textDecoration = "none";
+          
+          newsCard.innerHTML = `
+            <div class="emoji-float">🗞️</div>
+            <div>
+              <span class="tip-badge realtime-badge">Berita Terkini</span>
+              <h3 class="tip-title" style="font-size: 1.1rem; margin-bottom: 8px;">${news.title.substring(0, 45)}...</h3>
+              <p class="tip-desc">Klik untuk baca selengkapnya.</p>
+            </div>
+          `;
+          container.appendChild(newsCard);
+        });
+      }
+    } catch (e) {
+      console.log("Gagal memuat berita:", e);
+    }
+  }
+
+  // JALANKAN SAAT WEBSITE DIBUKA
   updateUI();
   loadDataFromAppsScript();
+  fetchRealtimeNews(); 
   </script>
 </body>
 </html>
