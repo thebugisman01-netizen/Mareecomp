@@ -1,190 +1,677 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MAREECOMP | Laptop • Repair • Upgrade</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #0057d9;
-            --success: #22c55e;
-            --danger: #ef4444;
-            --dark: #1e293b;
-            --bg: #f4f7fe;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Katalog Penjualan & Jasa | MAREECOMP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f7fb; --panel: #ffffff; --ink: #1e293b; --ink-light: #475569; --line: #e2e8f0;
+      --primary: #205f9a; --primary-hover: #194a7a; --primary-soft: #eff6ff; 
+      --accent: #f59e0b; --danger: #ef4444;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 10px 25px -3px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 20px 40px -5px rgba(32, 95, 154, 0.15);
+      --radius-lg: 24px; --radius-md: 16px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); font-family: "Plus Jakarta Sans", sans-serif; background-color: var(--bg); background-image: radial-gradient(at 0% 0%, hsla(217,100%,94%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(210,100%,95%,1) 0, transparent 50%); background-attachment: fixed; }
+    
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 1.2rem; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; flex-wrap: wrap; gap: 1rem;}
+    .brand-wrap { display: flex; align-items: center; gap: 0.8rem; cursor: pointer; user-select: none;}
+    .logo-icon { width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); }
+    .brand { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 1.5rem; color: var(--primary); line-height: 1; letter-spacing: -0.5px;}
+    .subtitle { display: block; font-size: 0.75rem; color: var(--ink-light); font-weight: 700; margin-top: 0.3rem; letter-spacing: 1px;}
+    
+    .btn { text-decoration: none; border: none; padding: 0.7rem 1.4rem; border-radius: 999px; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.9rem; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(32, 95, 154, 0.25); }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(32, 95, 154, 0.4); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-warning { background: var(--accent); color: white; }
+    .btn-outline { background: white; border: 2px solid var(--line); color: var(--ink); }
+    
+    .hero { background: white; border-radius: var(--radius-lg); padding: clamp(2rem, 5vw, 4rem); margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; box-shadow: var(--shadow-md); overflow: hidden; position: relative; }
+    .hero-content { flex: 1; max-width: 550px; z-index: 2; }
+    .hero-badge { display: inline-block; background: var(--primary-soft); color: var(--primary); padding: 0.4rem 1rem; border-radius: 999px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1rem; }
+    .hero h1 { font-family: "Bricolage Grotesque", sans-serif; margin: 0 0 15px 0; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.15; color: var(--ink); }
+    .hero p { color: var(--ink-light); margin: 0 0 20px 0; font-size: 1.05rem; line-height: 1.6;}
+    .hero-illustration { flex: 1; display: flex; justify-content: center; align-items: center; max-width: 400px; z-index: 2; }
+    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+    .hero-illustration svg { width: 100%; height: auto; animation: float 6s ease-in-out infinite; drop-shadow: 0 20px 30px rgba(32, 95, 154, 0.2); }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background: var(--bg); color: var(--dark); line-height: 1.6; }
+    .section-head { margin: 2rem 0 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+    .section-head h2 { font-family: "Bricolage Grotesque", sans-serif; margin: 0; font-size: 1.8rem;}
+    .search-filter-wrap { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; width: 100%; justify-content: flex-end; }
+    .search-bar { flex: 1; min-width: 200px; max-width: 300px; padding: 0.7rem 1.2rem; border-radius: 999px; border: 2px solid var(--line); font-family: inherit; font-size: 0.95rem; }
+    .filters { display: flex; gap: 0.5rem; flex-wrap: wrap; background: white; padding: 0.4rem; border-radius: 999px; box-shadow: var(--shadow-sm); border: 1px solid var(--line);}
+    .chip { background: transparent; border: none; color: var(--ink-light); padding: 0.6rem 1.2rem; border-radius: 999px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-size: 0.9rem; }
+    .chip.active { background: var(--primary); color: white; box-shadow: 0 4px 10px rgba(32, 95, 154, 0.3); }
+    
+    .catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; padding-bottom: 2rem; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s ease; box-shadow: var(--shadow-sm); }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); border-color: #bfdbfe; }
+    
+    .card-icon-wrap { width: 100%; aspect-ratio: 9/16; max-height: 250px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 5.5rem; overflow: hidden; background: #e2e8f0; }
+    .bg-penjualan { background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%); }
+    .bg-jasa { background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%); }
+    .icon-shadow { filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15)); }
+    .card-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+    .card:hover .card-image { transform: scale(1.05); }
 
-        /* Header & Logo */
-        header { 
-            position: sticky; top: 0; z-index: 100; background: white; 
-            padding: 12px 5%; display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .brand { display: flex; align-items: center; gap: 12px; }
-        .logo-box { width: 50px; height: 50px; border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
-        .logo-box img { width: 100%; height: 100%; object-fit: contain; }
-        .brand-text b { font-size: 1.2rem; display: block; line-height: 1; color: var(--primary); }
-        .brand-text small { font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .card-content { padding: 1.5rem; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+    .badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 8px; padding: 0.3rem 0.8rem; font-size: 0.75rem; font-weight: 700; margin-bottom: 12px; }
+    .badge.penjualan { background: #dbeafe; color: #1e40af; } 
+    .badge.jasa { background: #fef3c7; color: #b45309; } 
+    .title { margin: 0 0 0.4rem; font-family: "Bricolage Grotesque", sans-serif; font-size: 1.3rem;}
+    .spec { color: var(--ink-light); font-size: 0.9rem; margin: 0 0 8px 0; font-weight: 600;}
+    .desc { color: var(--ink-light); font-size: 0.85rem; margin: 0; line-height: 1.5; white-space: pre-line;}
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .read-more-btn { color: var(--primary); font-size: 0.8rem; font-weight: 700; cursor: pointer; background: none; border: none; padding: 0; margin-top: 5px; }
+    .price { margin: 15px 0; font-family: "Bricolage Grotesque", sans-serif; font-size: 1.5rem; color: var(--primary); font-weight: 800;}
+    
+    .card-action { display: flex; gap: 0.5rem; margin-top: 15px; flex-wrap: wrap; }
+    .card-action .btn { flex: 1; min-width: 80px; padding: 0.6rem; font-size: 0.85rem;} 
+    .loading-state { grid-column: 1/-1; text-align: center; padding: 4rem 1rem; color: var(--ink-light); font-weight: 600; font-size: 1.1rem; border: 2px dashed var(--line); border-radius: var(--radius-md);}
 
-        /* Hero */
-        .hero { background: linear-gradient(135deg, #0057d9, #00a2ff); color: white; padding: 40px 5%; text-align: center; }
-        .hero h1 { font-size: 1.8rem; margin-bottom: 8px; }
-        .promo { background: #facc15; color: #000; padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; display: inline-block; }
+    /* MODAL CSS */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; display: none; justify-content: center; align-items: center; padding: 1rem; }
+    .modal-box { background: white; border-radius: var(--radius-lg); padding: 2.5rem; width: 100%; max-width: 500px; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); max-height: 90vh; overflow-y: auto; }
+    .modal-box h2 { margin-top: 0; font-family: "Bricolage Grotesque"; color: var(--ink); }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--ink-light); }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.9rem; border-radius: 12px; border: 2px solid var(--line); background: #f8fafc; color: var(--ink); font-family: inherit; }
+    .close-btn { position: absolute; top: 20px; right: 25px; background: #f1f5f9; border: none; font-size: 1.2rem; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
+    .admin-only { display: none; }
 
-        /* Grid System */
-        .container { max-width: 1100px; margin: auto; padding: 20px 5%; }
-        .section-header { margin: 30px 0 15px; font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    footer { background: var(--panel); padding: 3rem 1.2rem; margin-top: 2rem; border-top: 1px solid var(--line); }
+    .footer-content { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+    .footer-col h3 { font-family: "Bricolage Grotesque"; margin-top: 0; color: var(--primary); font-size: 1.2rem;}
+    .footer-col p { color: var(--ink-light); font-size: 0.95rem; line-height: 1.6; }
+    
+    .scroll-container { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1.5rem; padding-top: 10px; }
+    .vertical-card { border-radius: var(--radius-md); flex: 0 0 auto; width: 220px; aspect-ratio: 9/16; padding: 1.5rem; display: flex; flex-direction: column; justify-content: flex-end; position: relative; color: white; transition: 0.3s ease;}
+    .vertical-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md);}
+    .vc-1 { background: linear-gradient(145deg, #FF9A9E 0%, #FECFEF 100%); color: #6b21a8; }
+    .vc-2 { background: linear-gradient(145deg, #a18cd1 0%, #fbc2eb 100%); color: #1e1b4b; }
+    .vc-3 { background: linear-gradient(145deg, #84fab0 0%, #8fd3f4 100%); color: #064e3b; }
+    .vc-realtime { background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%); color: white; border: 1px solid #334155; }
+    .emoji-float { font-size: 3.5rem; position: absolute; top: 20px; right: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1)); }
+    .tip-badge { display: table; background: rgba(255,255,255,0.4); padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.75rem; font-weight: 800; margin-bottom: 10px;}
+    .tip-badge.realtime-badge { background: rgba(59, 130, 246, 0.3); color: #93c5fd; border: 1px solid #3b82f6;}
+    .tip-title { font-family: "Bricolage Grotesque"; font-size: 1.2rem; margin: 0 0 0.5rem 0;}
+    .tip-desc { font-size: 0.85rem; margin: 0; line-height: 1.4; opacity: 0.9; font-weight: 500;}
 
-        /* Card */
-        .card { 
-            background: white; border-radius: 18px; padding: 15px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03); position: relative;
-            display: flex; flex-direction: column; transition: 0.3s;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
-        
-        .img-box { width: 100%; height: 170px; border-radius: 12px; overflow: hidden; margin-bottom: 12px; background: #eee; }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* Status Label */
-        .status { position: absolute; top: 25px; right: 25px; padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; color: white; }
-        .status.ready { background: var(--success); }
-        .status.habis { background: var(--danger); }
-
-        .price { font-size: 1.4rem; font-weight: 800; color: var(--primary); margin: 8px 0; }
-        .specs { font-size: 0.85rem; color: #64748b; margin-bottom: 15px; flex-grow: 1; }
-
-        /* Buttons */
-        .btn { 
-            width: 100%; padding: 12px; border: none; border-radius: 12px; 
-            cursor: pointer; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 8px;
-            transition: 0.2s; text-decoration: none; font-size: 0.9rem;
-        }
-        .btn-buy { background: var(--primary); color: white; }
-        .btn-buy:hover { background: #0044ab; }
-        .btn-sold { background: #e2e8f0; color: #94a3b8; cursor: not-allowed; }
-
-        /* Floating Checkout */
-        .wa-float { 
-            position: fixed; bottom: 25px; right: 25px; background: #25D366; color: white;
-            width: 60px; height: 60px; border-radius: 30px; display: grid; place-items: center;
-            font-size: 1.8rem; box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4); z-index: 1000; text-decoration: none;
-        }
-        #cart-count { position: absolute; top: -5px; right: -5px; background: var(--danger); width: 22px; height: 22px; border-radius: 50%; font-size: 0.7rem; display: grid; place-items: center; }
-
-        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
-    </style>
+    @media (max-width: 768px) {
+      .hero { flex-direction: column-reverse; text-align: center; padding: 2rem 1.5rem; }
+      .search-filter-wrap { flex-direction: column; align-items: stretch; }
+      .filters { width: 100%; justify-content: space-between; }
+      .search-bar { max-width: 100%; }
+      .chip { flex: 1; text-align: center; padding: 0.6rem 0.5rem; }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    <div class="brand">
-        <div class="logo-box"><img src="logo.png" onerror="this.src='https://via.placeholder.com/50?text=M'" alt="Logo"></div>
-        <div class="brand-text">
-            <b>MAREECOMP</b>
-            <small>Laptop • Repair • Upgrade</small>
+  <div class="container">
+    <header class="topbar">
+      <!-- PINTU RAHASIA: Ketuk Logo ini 5x untuk memunculkan login admin -->
+      <div class="brand-wrap" onclick="ketukanRahasia()">
+        <div class="logo-icon">
+          <svg viewBox="0 0 100 100" width="100%" height="100%">
+            <circle cx="50" cy="50" r="50" fill="#f4f2eb" />
+            <rect x="23" y="28" width="54" height="36" rx="3" fill="#205f9a" />
+            <rect x="27" y="32" width="46" height="28" fill="#f4f2eb" />
+            <path d="M 38 42 A 16 16 0 0 1 62 42" stroke="#205f9a" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M 44 49 A 8 8 0 0 1 56 49" stroke="#205f9a" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <circle cx="50" cy="56" r="2.5" fill="#205f9a" />
+            <path d="M 20 66 L 80 66 Q 84 66 84 70 L 84 71 Q 84 74 80 74 L 20 74 Q 16 74 16 71 L 16 70 Q 16 66 20 66 Z" fill="#205f9a" />
+            <rect x="42" y="68" width="16" height="2.5" rx="1" fill="#f4f2eb" />
+          </svg>
         </div>
+        <div>
+          <div class="brand">MAREECOMP</div>
+          <small class="subtitle">LAPTOP • REPAIR • UPGRADE</small>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <!-- Tombol Admin disembunyikan agar tidak memancing orang iseng -->
+        <button class="btn btn-outline" id="btnLogin" onclick="openLoginModal()" style="display:none !important;">⚙️ Admin</button>
+        <button class="btn btn-outline" id="btnLogout" onclick="logoutAdmin()" style="display:none;">🔒 Logout</button>
+        <button class="btn btn-primary admin-only" onclick="openAdminModalForAdd()">+ Tambah Item</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <span class="hero-badge">👋 Halo! Selamat Datang di Mareecomp</span>
+        <h1>Pusat Jual & Rawat Laptop Terpercaya.</h1>
+        <p>Temukan laptop best seller atau percayakan servis dan upgrade perangkatmu kepada teknisi handal kami.</p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="#katalog" class="btn btn-primary">Lihat Katalog ↓</a>
+          <a href="https://wa.me/6289654136885" class="btn btn-outline">Konsultasi WA 💬</a>
+        </div>
+      </div>
+      <div class="hero-illustration">
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="250" cy="250" r="220" fill="#eff6ff" />
+          <circle cx="250" cy="250" r="180" fill="#dbeafe" />
+          <rect x="120" y="280" width="260" height="20" rx="10" fill="#cbd5e1" />
+          <path d="M100 300 h300 v15 a10 10 0 0 1 -10 10 h-280 a10 10 0 0 1 -10 -10 v-15" fill="#94a3b8" />
+          <rect x="140" y="160" width="220" height="130" rx="8" fill="#1e293b" />
+          <rect x="150" y="170" width="200" height="105" rx="4" fill="#205f9a" />
+          <circle cx="210" cy="220" r="12" fill="white" />
+          <circle cx="290" cy="220" r="12" fill="white" />
+          <path d="M230 240 q20 20 40 0" stroke="white" stroke-width="6" stroke-linecap="round" fill="none" />
+          <g fill="#f59e0b">
+            <path d="M80 180 l30 -30 a20 20 0 0 1 20 10 l-40 40 a20 20 0 0 1 -10 -20 z" />
+            <rect x="65" y="195" width="40" height="15" rx="5" transform="rotate(45 85 205)" />
+          </g>
+          <path d="M380 140 l10 -30 l10 30 l30 10 l-30 10 l-10 30 l-10 -30 l-30 -10 z" fill="#fcd34d" />
+          <path d="M120 100 l5 -15 l5 15 l15 5 l-15 5 l-5 15 l-5 -15 l-15 -5 z" fill="#fbbf24" />
+        </svg>
+      </div>
+    </section>
+
+    <section id="katalog">
+      <div class="section-head">
+        <div>
+          <h2>Katalog Pilihan</h2>
+          <p style="color: var(--ink-light); margin: 5px 0 0; font-size: 0.95rem;">Produk & jasa dengan harga terbaik untukmu.</p>
+        </div>
+        <div class="search-filter-wrap">
+          <input type="text" id="searchInput" class="search-bar" placeholder="🔍 Cari laptop atau servis...">
+          <div class="filters">
+            <button class="chip active" data-filter="semua">Semua</button>
+            <button class="chip" data-filter="penjualan">💻 Penjualan</button>
+            <button class="chip" data-filter="jasa">🔧 Jasa</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- AREA KATALOG -->
+      <div id="catalog" class="catalog">
+         <div class="loading-state">Menarik data dari Database... 🔄</div>
+      </div>
+    </section>
+
+    <section class="tips-section">
+      <div class="section-head">
+        <h2>Tips & Info Tech Real-time 🌐</h2>
+      </div>
+      <div class="scroll-container" id="newsContainer">
+        <!-- 3 Kartu Permanen (Statis) -->
+        <div class="vertical-card vc-1"><div class="emoji-float">🥶</div><div><span class="tip-badge">Perawatan</span><h3 class="tip-title">Ganti Pasta</h3><p class="tip-desc">Laptop cepat panas? Waktunya ganti thermal paste.</p></div></div>
+        <div class="vertical-card vc-2"><div class="emoji-float">🔋</div><div><span class="tip-badge">Baterai</span><h3 class="tip-title">Biar Awet!</h3><p class="tip-desc">Gunakan fitur "Battery Conservation" agar tertahan 80%.</p></div></div>
+        <div class="vertical-card vc-3"><div class="emoji-float">🚀</div><div><span class="tip-badge">Upgrade</span><h3 class="tip-title">Wajib SSD</h3><p class="tip-desc">Pindah ke SSD bikin laptop tua jadi super ngebut.</p></div></div>
+        
+        <!-- BERITA REAL TIME AKAN MUNCUL DI SINI SECARA OTOMATIS -->
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h3>MAREECOMP</h3>
+        <p>Solusi jual beli laptop second dan jasa perbaikan terpercaya.</p>
+      </div>
+      <div class="footer-col">
+        <h3>📍 Lokasi & Kontak</h3>
+        <p><strong>Perumahan Bumi Mentari K1 No 14</strong><br>Pd. Petir, Kec. Bojongsari<br>Kota Depok, Jawa Barat 16517</p>
+        <p>WhatsApp: <a href="https://wa.me/6289654136885" style="color: var(--primary); text-decoration: none; font-weight: bold;">0896-5413-6885</a></p>
+      </div>
+      <div class="footer-col">
+        <h3>🕒 Jam Operasional</h3>
+        <p>Senin - Sabtu: 09.00 - 18.00 WIB</p>
+      </div>
     </div>
-</header>
+  </footer>
 
-<section class="hero">
-    <div class="promo">🔥 UNIT PILIHAN BERGARANSI</div>
-    <h1>Katalog Mareecomp</h1>
-    <p>Solusi laptop berkualitas & jasa repair profesional</p>
-</section>
+  <!-- MODAL LOGIN ADMIN -->
+  <div class="modal-overlay" id="loginOverlay">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeModals()">✕</button>
+      <h2>Masuk Admin 🔐</h2>
+      <div class="form-group">
+        <input type="password" id="adminPin" placeholder="Ketik PIN di sini (1234)..." autocomplete="off">
+      </div>
+      <button class="btn btn-primary" style="width: 100%; padding: 1rem;" onclick="checkLogin()">Login</button>
+    </div>
+  </div>
 
-<div class="container">
+  <!-- MODAL TAMBAH / EDIT ITEM -->
+  <div class="modal-overlay" id="adminOverlay">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeModals()">✕</button>
+      <h2 id="modalTitle" style="margin-bottom: 1.5rem;">📝 Tambah Item</h2>
+      <form id="adminForm">
+        <input type="hidden" id="editItemId" value="">
+        <input type="hidden" id="existingImage" value="">
+        
+        <div class="form-group">
+          <label>Tipe Katalog</label>
+          <select id="itemType">
+            <option value="penjualan">💻 Penjualan</option>
+            <option value="jasa">🔧 Jasa</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nama Produk / Jasa</label>
+          <input type="text" id="itemTitle" required>
+        </div>
+        <div class="form-group">
+          <label>Spesifikasi Singkat</label>
+          <input type="text" id="itemSpec" required>
+        </div>
+        
+        <!-- KOLOM UPLOAD FOTO (Akan disembunyikan jika pilih Jasa) -->
+        <div class="form-group" id="imageUploadGroup">
+          <label>Upload Foto (Khusus Penjualan)</label>
+          <input type="file" id="itemImage" accept="image/*">
+          <small style="color: var(--ink-light); font-size: 0.75rem;">Biarkan kosong jika tidak ingin ganti foto saat edit.</small>
+        </div>
+
+        <div class="form-group">
+          <label>Harga (Otomatis)</label>
+          <input type="text" id="itemPrice" required>
+        </div>
+        <div class="form-group">
+          <label>Deskripsi Tambahan</label>
+          <textarea id="itemDesc" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" id="btnSimpan" style="width: 100%; padding: 0.9rem;">💾 Simpan Katalog</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DETAIL PRODUK (POPUP BACA SELENGKAPNYA) -->
+  <div class="modal-overlay" id="detailOverlay">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeModals()">✕</button>
+      <span class="badge" id="detailBadge" style="margin-bottom: 10px;"></span>
+      <h2 id="detailTitle" style="margin-top: 5px; margin-bottom: 5px; font-size: 1.5rem;"></h2>
+      <p id="detailSpec" style="color: var(--ink-light); font-weight: 600; margin-top: 0; margin-bottom: 20px;"></p>
+      
+      <!-- Box Deskripsi yang bisa di-scroll jika kepanjangan -->
+      <div style="background: var(--bg); padding: 1rem; border-radius: 12px; margin-bottom: 20px; max-height: 35vh; overflow-y: auto;">
+        <p id="detailDesc" style="white-space: pre-line; color: var(--ink); font-size: 0.95rem; line-height: 1.6; margin: 0;"></p>
+      </div>
+      
+      <div id="detailPrice" class="price" style="font-size: 1.8rem; margin-bottom: 20px; text-align: center;"></div>
+      <a id="detailWaBtn" class="btn btn-primary" style="width: 100%; padding: 1rem;" href="#" target="_blank">Pesan Via WhatsApp 💬</a>
+    </div>
+  </div>
+
+  <script>
+  // =========================================================
+  // MAREECOMP - KATALOG DENGAN UPLOAD FOTO & BERITA REAL-TIME
+  // =========================================================
+
+  // PASTIKAN GANTI LINK INI DENGAN URL DEPLOYMENT BARU KAMU!
+  const appsScriptUrl = "https://script.google.com/macros/s/AKfycbyiyCgUi_zG_43mAqvd4NE34dLY-GirOxYtJkXdM9TZJRn7DdMIfhd-5WIxNhsShpuH/exec";
+
+  let items = [];
+  let isAdmin = localStorage.getItem("mareecomp_admin") === "true";
+  let activeFilter = "semua";
+  let searchQuery = "";
+  let hitungKetukan = 0;
+  let waktuReset;
+
+  const catalog = document.getElementById("catalog");
+  const chips = document.querySelectorAll(".chip");
+  const searchInput = document.getElementById("searchInput");
+  const adminForm = document.getElementById("adminForm");
+
+  // Logika menyembunyikan kolom foto jika pilih "Jasa"
+  document.getElementById("itemType").addEventListener("change", function(e) {
+    document.getElementById("imageUploadGroup").style.display = e.target.value === "jasa" ? "none" : "block";
+  });
+
+  // Pintu Rahasia: Ketuk logo 5x untuk memunculkan modal login
+  window.ketukanRahasia = function() {
+    hitungKetukan++;
+    clearTimeout(waktuReset);
+    waktuReset = setTimeout(() => { hitungKetukan = 0; }, 1500);
+    if (hitungKetukan === 5) {
+      openLoginModal();
+      hitungKetukan = 0; 
+    }
+  };
+
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  }
+
+  function normalizeItem(row) {
+    let rawPrice = String(row.harga ?? row.price ?? "0");
+    let cleanNumber = rawPrice.replace(/[^0-9]/g, "");
+    let finalPrice = cleanNumber ? "Rp " + Number(cleanNumber).toLocaleString("id-ID") : "Rp 0";
+
+    return {
+      id: String(row.id ?? row.ID ?? row.Id ?? ""),
+      type: String(row.tipe ?? row.type ?? "penjualan").toLowerCase().trim(),
+      title: String(row.judul ?? row.title ?? "Tanpa Nama"),
+      spec: String(row.spek ?? row.spec ?? "-"),
+      price: finalPrice,
+      desc: String(row.deskripsi ?? row.desc ?? ""),
+      image: String(row.image ?? "") 
+    };
+  }
+
+  // Harga otomatis saat diketik
+  document.getElementById("itemPrice").addEventListener("input", function () {
+    const numericValue = this.value.replace(/[^0-9]/g, "");
+    this.value = numericValue ? "Rp " + Number(numericValue).toLocaleString("id-ID") : "";
+  });
+
+  async function loadDataFromAppsScript() {
+    catalog.innerHTML = `<div class="loading-state">⏳ Menarik data dari Database...</div>`;
+    try {
+      const response = await fetch(appsScriptUrl, { method: "GET", cache: "no-store" });
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      const data = await response.json();
+      if (!Array.isArray(data)) throw new Error("Respons Apps Script bukan array.");
+      items = data.map(normalizeItem);
+      renderItems();
+    } catch (error) {
+      catalog.innerHTML = `
+        <div class="loading-state" style="color:var(--danger)">
+          ⚠️ Gagal mengambil data dari Google Sheets. <br>
+          <button class="btn btn-primary" style="margin-top:15px;" onclick="loadDataFromAppsScript()">🔄 Coba Lagi</button>
+        </div>`;
+    }
+  }
+
+  function renderItems() {
+    catalog.innerHTML = "";
+    const filteredItems = items.filter(item => {
+      const matchesFilter = activeFilter === "semua" || item.type === activeFilter;
+      const searchText = (item.title + " " + item.spec + " " + item.desc).toLowerCase();
+      return matchesFilter && searchText.includes(searchQuery);
+    });
+
+    if (filteredItems.length === 0) {
+      catalog.innerHTML = `<div class="loading-state">📦 Belum ada data katalog.</div>`;
+      return;
+    }
+
+    filteredItems.forEach(item => {
+      const isPenjualan = item.type === "penjualan";
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const adminButtons = isAdmin ? `
+        <button class="btn btn-warning" onclick="editItem('${item.id}')">✏️ Edit</button>
+        <button class="btn btn-danger" onclick="deleteItem('${item.id}')">🗑️ Hapus</button>
+      ` : "";
+
+      const readMore = item.desc.length > 70 ? `<button class="read-more-btn" onclick="openDetailModal('${item.id}')">Lihat Spesifikasi Lengkap</button>` : "";
+      const waText = encodeURIComponent("Halo MAREECOMP, saya tertarik dengan " + item.title + ". Apakah masih tersedia?");
+
+      const imageHTML = (isPenjualan && item.image && item.image.length > 50)
+        ? `<img src="${item.image}" class="card-image" alt="Foto">`
+        : `<div class="icon-shadow">${isPenjualan ? "💻" : "🔧"}</div>`;
+
+      card.innerHTML = `
+        <div class="card-icon-wrap ${isPenjualan ? "bg-penjualan" : "bg-jasa"}">
+          ${imageHTML}
+        </div>
+        <div class="card-content">
+          <div>
+            <span class="badge ${isPenjualan ? "penjualan" : "jasa"}">${isPenjualan ? "💻 Penjualan" : "🔧 Jasa"}</span>
+            <h3 class="title">${escapeHTML(item.title)}</h3>
+            <p class="spec">${escapeHTML(item.spec)}</p>
+            <p class="desc line-clamp-2">${escapeHTML(item.desc)}</p>
+            ${readMore}
+          </div>
+          <div>
+            <div class="price">${escapeHTML(item.price)}</div>
+            <div class="card-action">
+              <a href="https://wa.me/6289654136885?text=${waText}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">💬 Tanya</a>
+              ${adminButtons}
+            </div>
+          </div>
+        </div>
+      `;
+      catalog.appendChild(card);
+    });
+  }
+
+  // FUNGSI MEMBUKA MODAL DETAIL SPESIFIKASI
+  window.openDetailModal = function(id) {
+    const item = items.find(i => String(i.id) === String(id));
+    if(!item) return;
+
+    const isPenjualan = item.type === 'penjualan';
+    const badgeIcon = isPenjualan ? '💻' : '🔧';
+    const badgeEl = document.getElementById("detailBadge");
     
-    <div class="section-header"><i class="fas fa-laptop"></i> Laptop Ready</div>
-    <div class="grid">
-        
-        <div class="card">
-            <span class="status ready">READY</span>
-            <div class="img-box">
-                <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500" alt="Unit">
-            </div>
-            <h3>ThinkPad X280</h3>
-            <p class="specs">i5 Gen 8 • RAM 8GB • SSD 256GB • Slim & Ringan</p>
-            <div class="price">Rp 2.999.000</div>
-            <button class="btn btn-buy" onclick="tambahItem('ThinkPad X280', '2.999.000')">Pesan Sekarang</button>
-        </div>
+    badgeEl.className = `badge ${item.type}`;
+    badgeEl.innerHTML = `${badgeIcon} ${item.type.toUpperCase()}`;
 
-        <div class="card">
-            <span class="status ready">READY</span>
-            <div class="img-box">
-                <img src="https://images.unsplash.com/photo-1517336714739-489689fd1ca8?w=500" alt="Unit">
-            </div>
-            <h3>ThinkPad X390</h3>
-            <p class="specs">i5 Gen 8 • RAM 16GB • SSD 512GB • IPS Full HD</p>
-            <div class="price">Rp 3.850.000</div>
-            <button class="btn btn-buy" onclick="tambahItem('ThinkPad X390', '3.850.000')">Pesan Sekarang</button>
-        </div>
+    document.getElementById("detailTitle").innerText = item.title;
+    document.getElementById("detailSpec").innerText = item.spec;
+    document.getElementById("detailDesc").innerText = item.desc;
+    document.getElementById("detailPrice").innerText = item.price;
+    
+    const waText = encodeURIComponent("Halo MAREECOMP, saya tertarik dengan " + item.title + ". Apakah masih tersedia?");
+    document.getElementById("detailWaBtn").href = `https://wa.me/6289654136885?text=${waText}`;
 
-        <div class="card">
-            <span class="status habis">HABIS</span>
-            <div class="img-box" style="filter: grayscale(1);">
-                <img src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?w=500" alt="Unit">
-            </div>
-            <h3>ThinkPad T480</h3>
-            <p class="specs">i5 Gen 8 • RAM 8GB • SSD 256GB • Dual Battery</p>
-            <div class="price">Rp 3.999.000</div>
-            <button class="btn btn-sold" disabled>Sudah Terjual</button>
-        </div>
+    document.getElementById("detailOverlay").style.display = "flex";
+  };
 
-    </div>
+  // FUNGSI UPLOAD GAMBAR & SIMPAN
+  adminForm.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById("btnSimpan");
+    const editId = document.getElementById("editItemId").value.trim();
+    const existingImage = document.getElementById("existingImage").value;
+    const fileInput = document.getElementById("itemImage");
+    const itemType = document.getElementById("itemType").value;
 
-    <div class="section-header"><i class="fas fa-tools"></i> Jasa & Lisensi</div>
-    <div class="grid">
-        
-        <div class="card" style="border-left: 5px solid #facc15;">
-            <h3>Lisensi Windows / Office</h3>
-            <p class="specs">Original & Permanen. Support Windows 10/11 & Office 2021/2024.</p>
-            <div class="price">Rp 150.000</div>
-            <button class="btn btn-buy" onclick="tambahItem('Lisensi Windows/Office', '150.000')">Beli Lisensi</button>
-        </div>
+    btn.disabled = true;
+    btn.innerText = "⏳ Memproses & Menyimpan...";
 
-        <div class="card">
-            <h3>Repasta & Cleaning</h3>
-            <p class="specs">Ganti thermal paste Arctic MX-4 + Pembersihan debu total.</p>
-            <div class="price">Rp 100.000</div>
-            <button class="btn btn-buy" onclick="tambahItem('Jasa Cleaning Laptop', '100.000')">Booking Jasa</button>
-        </div>
+    let finalBase64Image = existingImage; 
 
-    </div>
-</div>
-
-<a href="javascript:void(0)" onclick="checkoutWA()" class="wa-float">
-    <i class="fab fa-whatsapp"></i>
-    <div id="cart-count">0</div>
-</a>
-
-<script>
-    let keranjang = [];
-
-    function tambahItem(nama, harga) {
-        keranjang.push(nama + " (" + harga + ")");
-        document.getElementById('cart-count').innerText = keranjang.length;
-        alert(nama + " berhasil masuk keranjang!");
+    if (itemType === "penjualan" && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      finalBase64Image = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            const MAX_WIDTH = 400;
+            const scaleSize = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1;
+            canvas.width = img.width * scaleSize;
+            canvas.height = img.height * scaleSize;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL("image/jpeg", 0.6)); 
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    } else if (itemType === "jasa") {
+      finalBase64Image = ""; 
     }
 
-    function checkoutWA() {
-        const noWA = "6289654136885";
-        let pesan = "";
+    const payload = {
+      action: editId ? "edit" : "add",
+      id: editId || Date.now().toString(),
+      type: itemType,
+      title: document.getElementById("itemTitle").value.trim(),
+      spec: document.getElementById("itemSpec").value.trim(),
+      price: document.getElementById("itemPrice").value.trim(),
+      desc: document.getElementById("itemDesc").value.trim(),
+      image: finalBase64Image
+    };
 
-        if (keranjang.length === 0) {
-            pesan = "Halo Admin MAREECOMP, saya mau tanya-tanya tentang stok laptop...";
-        } else {
-            let daftar = keranjang.join("\n- ");
-            pesan = "Halo Admin MAREECOMP, saya mau order:\n- " + daftar + "\n\nApakah masih ada?";
-        }
+    try {
+      const formData = new URLSearchParams();
+      formData.append("data", JSON.stringify(payload));
 
-        window.open("https://wa.me/" + noWA + "?text=" + encodeURIComponent(pesan), "_blank");
+      await fetch(appsScriptUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body: formData.toString()
+      });
+
+      alert(editId ? "Data diperbarui!" : "Data berhasil ditambahkan!");
+      closeModals();
+      setTimeout(loadDataFromAppsScript, 1200);
+    } catch (error) {
+      alert("Gagal menyimpan data.");
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "💾 Simpan Katalog";
     }
-</script>
+  });
 
+  window.deleteItem = async function(id) {
+    if (!confirm("Yakin ingin menghapus item ini dari database?")) return;
+    try {
+      await fetch(appsScriptUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "delete", id: String(id) })
+      });
+      alert("Permintaan hapus berhasil dikirim.");
+      setTimeout(loadDataFromAppsScript, 1000);
+    } catch (error) {
+      alert("Gagal menghapus data.");
+      loadDataFromAppsScript();
+    }
+  };
+
+  function updateUI() {
+    document.querySelectorAll(".admin-only").forEach(el => { el.style.display = isAdmin ? "inline-flex" : "none"; });
+    document.getElementById("btnLogout").style.display = isAdmin ? "inline-flex" : "none";
+    renderItems();
+  }
+
+  window.openLoginModal = function() {
+    document.getElementById("loginOverlay").style.display = "flex";
+    setTimeout(() => document.getElementById("adminPin").focus(), 50);
+  };
+
+  window.openAdminModalForAdd = function() {
+    adminForm.reset();
+    document.getElementById("editItemId").value = "";
+    document.getElementById("existingImage").value = "";
+    document.getElementById("modalTitle").innerHTML = "📝 Tambah Item Baru";
+    document.getElementById("imageUploadGroup").style.display = "block"; 
+    document.getElementById("adminOverlay").style.display = "flex";
+  };
+
+  window.editItem = function(id) {
+    const item = items.find(x => String(x.id) === String(id));
+    if (!item) return alert("Data tidak ditemukan.");
+
+    document.getElementById("editItemId").value = item.id;
+    document.getElementById("itemType").value = item.type;
+    document.getElementById("itemTitle").value = item.title;
+    document.getElementById("itemSpec").value = item.spec;
+    document.getElementById("itemPrice").value = item.price;
+    document.getElementById("itemDesc").value = item.desc;
+    document.getElementById("existingImage").value = item.image; 
+    
+    document.getElementById("imageUploadGroup").style.display = item.type === "jasa" ? "none" : "block";
+    
+    document.getElementById("modalTitle").innerHTML = "✏️ Edit Item";
+    document.getElementById("adminOverlay").style.display = "flex";
+  };
+
+  window.closeModals = function() {
+    document.getElementById("loginOverlay").style.display = "none";
+    document.getElementById("adminOverlay").style.display = "none";
+    document.getElementById("detailOverlay").style.display = "none";
+    document.getElementById("adminPin").value = "";
+  };
+
+  window.checkLogin = function() {
+    const pin = document.getElementById("adminPin").value;
+    if (pin === "1234") { 
+      isAdmin = true;
+      localStorage.setItem("mareecomp_admin", "true");
+      closeModals();
+      updateUI();
+    } else {
+      alert("PIN Salah!");
+    }
+  };
+
+  window.logoutAdmin = function() {
+    isAdmin = false;
+    localStorage.setItem("mareecomp_admin", "false");
+    updateUI();
+  };
+
+  searchInput.addEventListener("input", function(e) {
+    searchQuery = e.target.value.toLowerCase().trim();
+    renderItems();
+  });
+
+  chips.forEach(chip => {
+    chip.addEventListener("click", function() {
+      activeFilter = chip.dataset.filter;
+      chips.forEach(btn => btn.classList.toggle("active", btn === chip));
+      renderItems();
+    });
+  });
+
+  document.getElementById("loginOverlay").addEventListener("click", function(e) { if (e.target === this) closeModals(); });
+  document.getElementById("adminOverlay").addEventListener("click", function(e) { if (e.target === this) closeModals(); });
+  document.getElementById("detailOverlay").addEventListener("click", function(e) { if (e.target === this) closeModals(); });
+
+  // FUNGSI MENGAMBIL BERITA TEKNOLOGI REAL-TIME 
+  async function fetchRealtimeNews() {
+    const container = document.getElementById("newsContainer");
+    try {
+      // Menggunakan API RSS ke JSON untuk mengambil berita Teknologi terbaru
+      const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.cnnindonesia.com%2Fteknologi%2Frss');
+      const data = await res.json();
+      
+      if(data && data.items && data.items.length > 0) {
+        // Ambil 2 berita terbaru agar sejajar dengan 3 kartu statis
+        const latestNews = data.items.slice(0, 2);
+        
+        latestNews.forEach(news => {
+          const newsCard = document.createElement("a");
+          newsCard.href = news.link;
+          newsCard.target = "_blank";
+          newsCard.className = "vertical-card vc-realtime";
+          newsCard.style.textDecoration = "none";
+          
+          newsCard.innerHTML = `
+            <div class="emoji-float">🗞️</div>
+            <div>
+              <span class="tip-badge realtime-badge">Berita Terkini</span>
+              <h3 class="tip-title" style="font-size: 1.1rem; margin-bottom: 8px;">${news.title.substring(0, 45)}...</h3>
+              <p class="tip-desc">Klik untuk baca selengkapnya.</p>
+            </div>
+          `;
+          container.appendChild(newsCard);
+        });
+      }
+    } catch (e) {
+      console.log("Gagal memuat berita:", e);
+    }
+  }
+
+  // JALANKAN SAAT WEBSITE DIBUKA
+  updateUI();
+  loadDataFromAppsScript();
+  fetchRealtimeNews(); 
+  </script>
 </body>
 </html>
